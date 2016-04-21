@@ -1,0 +1,31 @@
+# This application was generated with Rails Composer
+
+development:
+  apps4: rails-devise-roles
+  announcements: none
+  dev_webserver: unicorn
+  prod_webserver: unicorn
+  database: postgresql
+  templates: slim
+  tests: none
+  continuous_testing: 
+  frontend: bootstrap3
+  email: mandrill
+  authentication: devise
+  devise_modules: confirmable
+  omniauth_provider: 
+  authorization: roles
+  form_builder: simple_form
+  pages: about+users
+  layouts: business_frontpage
+  locale: none
+  analytics: 
+  deployment: 
+  ban_spiders: 
+  github: 
+  local_env_file: false
+  quiet_assets: true
+  better_errors: true
+  pry: false
+  rvmrc: 
+  dashboard: administrate
