@@ -17,7 +17,7 @@ development:
   host:     localhost
   encoding: unicode
   database: doc_and_i_api_development
-  pool:     5
+  pool:       
   username: docandi
   password: docandi5
   template: template0
@@ -46,7 +46,7 @@ test:
   encoding: unicode
   database: doc_and_i_api_test
   pool:     5
-  username: docandi
+  username: postgresql
   password: docandi5
   template: template0
 
