@@ -55,6 +55,7 @@ gem 'simple_form'
 gem 'slim-rails'
 gem 'unicorn'
 gem 'unicorn-rails'
+gem 'thin'
 
 group :development do
   gem 'better_errors'
