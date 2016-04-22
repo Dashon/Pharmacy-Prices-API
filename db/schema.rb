@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20160422083545) do
     t.float    "distance_miles_max"
     t.string   "distance_from_zip"
     t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "updated_at" 
   end
 
   create_table "users", force: :cascade do |t|
