@@ -1,1 +1,1 @@
-web: bundle exec puma -C config/puma.rb
+web: gunicorn app:app --log-file=-
