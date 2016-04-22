@@ -56,7 +56,7 @@ gem 'slim-rails'
 gem 'unicorn'
 gem 'unicorn-rails'
 gem 'thin'
-
+gem 'active_model_serializers', '~> 0.9.5'
 group :development do
   gem 'better_errors'
   gem 'haml2slim'
