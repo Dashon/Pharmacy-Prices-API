@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  root to: 'visitors#index'
+  devise_for :users
+  resources :users
+
+  api_constraints = if Rails.env.production?
+    {subdomain: 'api'}
+  else
+    {}
+  end
+
+  namespace :api, path: '', constraints: api_constraints, defaults: {format: :json} do
+    namespace :v1 do
+      resources :users
+      resources :drug_prices
+      resources :pharmacies
+      resources :drugs
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

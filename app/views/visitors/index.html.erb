@@ -1,0 +1,10 @@
+<h3>Welcome</h3>
+<% if !current_user.nil? %>
+<p> API Key: <%= current_user.api_token %> </p>
+
+<p> Access Level: <%= current_user.role %> </p>
+
+<% if current_user.admin? %>
+<p><%= link_to 'Users:', users_path %> <%= User.count %> registered</p>
+<% end %>
+<% end %>

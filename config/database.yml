@@ -46,7 +46,7 @@ test:
   encoding: unicode
   database: doc_and_i_api_test
   pool:     5
-  username: postgresql
+  username: docandi
   password: docandi5
   template: template0
 
