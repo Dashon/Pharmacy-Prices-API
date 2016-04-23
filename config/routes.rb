@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     {}
   end
 
-  namespace :api, path: '', constraints: api_constraints, defaults: {format: :json} do
+  namespace :api, defaults: {format: :json} do
     namespace :v1 do
       resources :users
       resources :drug_prices
