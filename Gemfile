@@ -55,6 +55,7 @@ gem 'simple_form'
 gem 'slim-rails'
 gem 'unicorn'
 gem 'unicorn-rails'
+gem 'mandrill-api'
 gem 'thin'
 gem 'active_model_serializers', '~> 0.9.5'
 group :development do
