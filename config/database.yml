@@ -52,10 +52,10 @@ test:
 
 production:
   adapter:  postgresql
-  host:     localhost
+  host:     <%= ENV["DATABASE_URL"] %>
   encoding: unicode
   database: doc_and_i_api_production
   pool:     5
-  username: docandi
-  password: docandi5
+  username: <%= ENV["DATABASE_ADMIN"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
   template: template0
