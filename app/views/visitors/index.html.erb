@@ -1,10 +1,352 @@
-<h3>Welcome</h3>
+<h2>Welcome</h2>
 <% if !current_user.nil? %>
-<p> API Key: <%= current_user.api_token %> </p>
 
 <p> Access Level: <%= current_user.role %> </p>
+<br>
+<p> API URL: http://doc-and-i-api.herokuapp.com/api/v1/ </p>
+<p> API Key: <%= current_user.api_token %> </p>
+<p> Authentication Header: X-Api-Key : {API KEY} </p>
 
 <% if current_user.admin? %>
 <p><%= link_to 'Users:', users_path %> <%= User.count %> registered</p>
 <% end %>
+<br>
+<h2>API Documentaion</h2>
+<h3>/drugs</h3>
+<p>Search for Drugs</p>
+<strong>Notes</strong>
+<p>Search parameters can be combined freely.
+    <br> Name prefix must be at least 3 characters.
+    <br> Generic and therapy class id may change over time and should not be stored long-term.
+    <br> At most 100 results will be returned.
+    <br>
+</p>
+<strong>Response</strong>
+<pre><code class="json">[
+  {
+    "<span class="attribute">ndc11</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">dosageForm</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">isGeneric</span>": <span class="value"><span class="literal">true</span></span>,
+    "<span class="attribute">generic</span>": <span class="value">{
+      "<span class="attribute">id</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">therapyClass</span>": <span class="value">{
+      "<span class="attribute">id</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">strength</span>": <span class="value">{
+      "<span class="attribute">description</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">units</span>": <span class="value"><span class="number">0</span></span>,
+      "<span class="attribute">unitOfMeasure</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">package</span>": <span class="value">{
+      "<span class="attribute">description</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">quantity</span>": <span class="value"><span class="number">0</span></span>,
+      "<span class="attribute">type</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">units</span>": <span class="value"><span class="number">0</span></span>,
+      "<span class="attribute">unitOfMeasure</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">unitOfUsePackaging</span>": <span class="value"><span class="literal">true</span>
+    }</span>
+  }</span>
+]</code></pre>
+<strong>Parameters</strong>
+<table class="fullwidth">
+    <thead>
+        <tr>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter</th>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter Type</th>
+            <th style="width: 220px; max-width: 230px" data-sw-translate="">Data Type</th>
+        </tr>
+    </thead>
+    <tbody class="operation-params">
+        <tr>
+            <td class="code">
+                <label>therapy-class:id</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>generic:id</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>name:prefix</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>name</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>ndc11</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<h3>/drugs/{ndc11}</h3>
+<p>Find drug by NDC11</p>
+<strong>Notes</strong>
+<p>
+    Only participating pharmacies are returned. At most 100 results will be returned.
+</p>
+<strong>Response</strong>
+<pre><code class="json">{
+  "<span class="attribute">ndc11</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">dosageForm</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">isGeneric</span>": <span class="value"><span class="literal">true</span></span>,
+  "<span class="attribute">generic</span>": <span class="value">{
+    "<span class="attribute">id</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span>
+  }</span></span>,
+  "<span class="attribute">therapyClass</span>": <span class="value">{
+    "<span class="attribute">id</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span>
+  }</span></span>,
+  "<span class="attribute">strength</span>": <span class="value">{
+    "<span class="attribute">description</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">units</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">unitOfMeasure</span>": <span class="value"><span class="string">"string"</span>
+  }</span></span>,
+  "<span class="attribute">package</span>": <span class="value">{
+    "<span class="attribute">description</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">quantity</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">type</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">units</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">unitOfMeasure</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">unitOfUsePackaging</span>": <span class="value"><span class="literal">true</span>
+  }</span>
+}</span></code></pre>
+<strong>Parameters</strong>
+<table class="fullwidth">
+    <thead>
+        <tr>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter</th>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter Type</th>
+            <th style="width: 220px; max-width: 230px" data-sw-translate="">Data Type</th>
+        </tr>
+    </thead>
+    <tbody class="operation-params">
+        <tr>
+            <td class="code">
+                <label>distance:miles:max</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">long</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code required">
+                <label>distance:from:zip</label>
+            </td>
+            <td>query</td>
+            <td><span class="model-signature">string</span></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<h3>/pharmacies</h3>
+<p>Search for pharmacies</p>
+<strong>Notes</strong>
+<p>
+    Only participating pharmacies are returned. At most 100 results will be returned.
+</p>
+<strong>Response</strong>
+<pre><code class="json">[
+  {
+    "<span class="attribute">npi</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">address</span>": <span class="value">{
+      "<span class="attribute">line1</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">line2</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">city</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">state</span>": <span class="value"><span class="string">"string"</span></span>,
+      "<span class="attribute">zip</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">phoneNumber</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">faxNumber</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">distance</span>": <span class="value">{
+      "<span class="attribute">from</span>": <span class="value">{
+        "<span class="attribute">zip</span>": <span class="value"><span class="string">"string"</span>
+      }</span></span>,
+      "<span class="attribute">miles</span>": <span class="value"><span class="number">0</span>
+    }</span>
+  }</span>
+]</code></pre>
+<strong>Parameters</strong>
+<table class="fullwidth">
+    <thead>
+        <tr>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter</th>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter Type</th>
+            <th style="width: 220px; max-width: 230px" data-sw-translate="">Data Type</th>
+        </tr>
+    </thead>
+    <tbody class="operation-params">
+        <tr>
+            <td class="code">
+                <label>distance:miles:max</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">long</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code required">
+                <label>distance:from:zip</label>
+            </td>
+            <td>query</td>
+            <td><span class="model-signature">string</span></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<h3>/pharmacies/{npi}</h3>
+<p>Find pharmacy by NPI</p>
+<strong>Response</strong>
+<pre><code class="json">{
+  "<span class="attribute">npi</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">address</span>": <span class="value">{
+    "<span class="attribute">line1</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">line2</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">city</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">state</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">zip</span>": <span class="value"><span class="string">"string"</span>
+  }</span></span>,
+  "<span class="attribute">phoneNumber</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">faxNumber</span>": <span class="value"><span class="string">"string"</span></span>,
+  "<span class="attribute">distance</span>": <span class="value">{
+    "<span class="attribute">from</span>": <span class="value">{
+      "<span class="attribute">zip</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">miles</span>": <span class="value"><span class="number">0</span>
+  }</span>
+}</span></code></pre>
+<strong>Parameters</strong>
+<table class="fullwidth">
+    <thead>
+        <tr>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter</th>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter Type</th>
+            <th style="width: 220px; max-width: 230px" data-sw-translate="">Data Type</th>
+        </tr>
+    </thead>
+    <tbody class="operation-params">
+        <tr>
+            <td class="code required">
+                <label>npi</label>
+            </td>
+            <td>path</td>
+            <td><span class="model-signature">string</span></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<hr>
+<h3>/drug-prices</h3>
+<p>Calculate drug price</p>
+<strong>Notes</strong>
+<p>
+    Must specify either ndc11 or generic.id
+    <br> Days supply is used to check for additional discounts usually available when purchasing 3 months or more at once.
+</p>
+<strong>Response</strong>
+<pre>
+<code class="json">[
+  {
+    "<span class="attribute">pharmacy</span>": <span class="value">{
+      "<span class="attribute">npi</span>": <span class="value"><span class="string">"string"</span>
+    }</span></span>,
+    "<span class="attribute">brandPrice</span>": <span class="value"><span class="string">"string"</span></span>,
+    "<span class="attribute">genericPrice</span>": <span class="value"><span class="string">"string"</span>
+  }</span>
+]</code>
+</pre>
+<strong>Parameters</strong>
+<table class="fullwidth">
+    <thead>
+        <tr>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter</th>
+            <th style="width: 100px; max-width: 100px" data-sw-translate="">Parameter Type</th>
+            <th style="width: 220px; max-width: 230px" data-sw-translate="">Data Type</th>
+        </tr>
+    </thead>
+    <tbody class="operation-params">
+        <tr>
+            <td class="code required">
+                <label>pharmacy:npi</label>
+            </td>
+            <td>query</td>
+            <td><span class="model-signature">Array[string]</span></td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>days-supply</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">long</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code required">
+                <label>quantity</label>
+            </td>
+            <td>query</td>
+            <td><span class="model-signature">double</span></td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>generic:id</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="code">
+                <label>ndc11</label>
+            </td>
+            <td>query</td>
+            <td>
+                <span class="model-signature">string</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
 <% end %>
