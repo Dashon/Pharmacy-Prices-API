@@ -8,10 +8,7 @@ Bundler.require(*Rails.groups)
 
 module DocAndIApi
   class Application < Rails::Application
-    config.action_dispatch.default_headers = {
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Request-Method' => %w{GET OPTIONS}.join(",")
-    }
+
       config.generators do |g|
       g.test_framework :rspec,
       fixtures: true,
@@ -37,4 +34,8 @@ module DocAndIApi
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
   end
+  config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
+  }
 end
