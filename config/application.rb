@@ -8,7 +8,10 @@ Bundler.require(*Rails.groups)
 
 module DocAndIApi
   class Application < Rails::Application
-      
+    config.action_dispatch.default_headers = {
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Request-Method' => %w{GET OPTIONS}.join(",")
+    }
       config.generators do |g|
       g.test_framework :rspec,
       fixtures: true,
