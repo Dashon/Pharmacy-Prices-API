@@ -58,6 +58,7 @@ gem 'unicorn-rails'
 gem 'mandrill-api'
 gem 'thin'
 gem 'active_model_serializers', '~> 0.9.5'
+gem 'rack-cors', '~> 0.3.1'
 group :development do
   gem 'better_errors'
   gem 'haml2slim'

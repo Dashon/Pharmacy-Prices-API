@@ -8,13 +8,13 @@ Bundler.require(*Rails.groups)
 
 module DocAndIApi
   class Application < Rails::Application
-    config.action_dispatch.default_headers = {
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(","),
-        'Access-Control-Allow-Headers:' => 'Origin, X-Requested-With, Content-Type, Accept'
-    
-    }
-      config.generators do |g|
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+    config.generators do |g|
       g.test_framework :rspec,
       fixtures: true,
       view_specs: false,
