@@ -112,10 +112,6 @@
 <br>
 <h3>/drugs/{ndc11}</h3>
 <p>Find drug by NDC11</p>
-<strong>Notes</strong>
-<p>
-    Only participating pharmacies are returned. At most 100 results will be returned.
-</p>
 <strong>Response</strong>
 <pre><code class="json">{
   "<span class="attribute">ndc11</span>": <span class="value"><span class="string">"string"</span></span>,
@@ -156,19 +152,12 @@
     <tbody class="operation-params">
         <tr>
             <td class="code">
-                <label>distance_miles_max</label>
+                <label>ndc11</label>
             </td>
-            <td>query</td>
+            <td>path</td>
             <td>
-                <span class="model-signature">long</span>
+                <span class="model-signature">string</span>
             </td>
-        </tr>
-        <tr>
-            <td class="code required">
-                <label>distance_from_zip</label>
-            </td>
-            <td>query</td>
-            <td><span class="model-signature">string</span></td>
         </tr>
     </tbody>
 </table>
