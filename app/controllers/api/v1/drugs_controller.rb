@@ -9,6 +9,10 @@ class Api::V1::DrugsController < Api::ApiController
     uri = URI.parse("https://dplu-preview.data-rx.com/api/v1/drugs")
 
     if original_uri.query != nil
+      original_uri.query.sub! 'name_prefix', 'name%3Aprefix'
+      original_uri.query.sub! 'generic_id', 'generic%3Aid'
+      original_uri.query.sub! 'therapy-class_id', 'therapy-class%3Aid'
+
       uri.query = original_uri.query
     end
 
