@@ -1,0 +1,2 @@
+module HcfLocationsHelper
+end

@@ -16,7 +16,7 @@ class Api::V1::PharmaciesController < Api::ApiController
     end
 
     response = Net::HTTP.get_response(uri)
-    render json: response.body
+    render json: response.bodys
   end
 
 

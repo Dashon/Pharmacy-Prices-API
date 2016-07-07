@@ -1,3 +1,4 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :password, :auth_token, :api_token, :account_active, :api_rpm
+  attributes :id, :email, :password, :api_token, :api_rpm, :name
+  has_one :role
 end

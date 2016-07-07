@@ -1,0 +1,2 @@
+module HcfRewardsHelper
+end

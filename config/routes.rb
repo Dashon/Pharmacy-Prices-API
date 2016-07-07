@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  post 'auth_user' => 'authentication#authenticate_user'
   root to: 'visitors#index'
-  devise_for :users
-  resources :users
+  # devise_for :users
+  # resources :users
 
   api_constraints = if Rails.env.production?
     {subdomain: 'api'}
@@ -11,10 +12,47 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      resources :users
+      resources :users do
+        member do
+          get :unassociate
+        end
+      end
       resources :drug_prices
       resources :pharmacies
       resources :drugs
+      resources :pharmacy_edit_requests
+      resources :hcf_locations
+      resources :user_rewards
+      resources :hcf_rewards
+      resources :rewards
+      resources :awards
+      resources :contracted_pharmacies do
+        collection do
+           get :prefix
+        end
+      end
+      resources :hcf_pharmacies do
+        collection do
+          get :prefix
+        end
+      end
+      resources :answers do
+        collection do
+          get :prefix
+        end
+      end
+      resources :questions
+      resources :surveys
+      resources :health_care_facilities do
+        collection do
+          get :prefix
+        end
+      end
+      resources :dni_pharmacies do
+        collection do
+          get :prefix
+        end
+      end
     end
   end
 

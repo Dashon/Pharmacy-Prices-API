@@ -59,6 +59,12 @@ gem 'mandrill-api'
 gem 'thin'
 gem 'active_model_serializers', '~> 0.9.5'
 gem 'rack-cors', '~> 0.3.1'
+gem 'kaminari' 
+gem 'hashids', '~> 1.0', '>= 1.0.2'
+gem 'where-or'
+gem 'devise_token_auth'
+gem 'omniauth', '~> 1.3', '>= 1.3.1'
+
 group :development do
   gem 'better_errors'
   gem 'haml2slim'

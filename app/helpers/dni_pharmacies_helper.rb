@@ -1,0 +1,2 @@
+module DniPharmaciesHelper
+end
