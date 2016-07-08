@@ -8,6 +8,17 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
     render json: @contracted_pharmacies
   end
 
+ # GET /contracted_pharmacies/prefix
+  def prefix
+    if params[:query].length >= 3
+      t = ContractedPharmacy.arel_table
+      @contracted_pharmacies = ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).page(params[:page]).per(params[:limit])
+      render json: @contracted_pharmacies
+    else
+      render json: '"{"name":"Minimum 3 Characters"}'
+    end
+  end
+
   # GET /contracted_pharmacies/1
   def show
     render json: @contracted_pharmacy
@@ -53,6 +64,6 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def contracted_pharmacy_params
-    params.require(:contracted_pharmacy).permit(:hcf_pharmacy_id, :user_id)
+    params.permit(:hcf_pharmacy_id, :user_id,:health_care_facility_id)
   end
 end

@@ -1,20 +1,24 @@
 Rails.application.routes.draw do
-  post 'auth_user' => 'authentication#authenticate_user'
-  root to: 'visitors#index'
-  # devise_for :users
-  # resources :users
-
+  resources :pending_memberships
+  resources :pending_memberships
   api_constraints = if Rails.env.production?
     {subdomain: 'api'}
   else
     {}
   end
-
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
+
+      post 'auth_user' => 'authentication#authenticate_user'
+      put 'password' => 'authentication#update_password'
+      delete 'sign_out' => 'authentication#sign_out'
       resources :users do
         member do
           get :unassociate
+        end
+        collection do
+          get :roles
         end
       end
       resources :drug_prices
@@ -28,7 +32,7 @@ Rails.application.routes.draw do
       resources :awards
       resources :contracted_pharmacies do
         collection do
-           get :prefix
+          get :prefix
         end
       end
       resources :hcf_pharmacies do

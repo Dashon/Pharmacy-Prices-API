@@ -1,16 +1,13 @@
 class Api::ApiController < ActionController::Base
-    attr_reader :current_user
-
   #before_action :authenticate
   before_action :authenticate_manual
-  before_filter :authenticate_request! ,:except =>  :authenticate_user
   #before_action :validate_rpm
   before_action :check_pageination, only: [:index, :prefix]
   private
 
   def authenticate
     authenticate_or_request_with_http_token do |token, options|
-      @app = User.where(api_token: token).first
+      @user = User.where(api_token: token).first
     end
   end
 
@@ -18,10 +15,11 @@ class Api::ApiController < ActionController::Base
   # Manual way of authenticate request
   def authenticate_manual
     api_token = request.headers['X-Api-Key']
-    @app = User.where(api_token: api_token).first if api_token
+    @user = User.where(api_token: api_token).first if api_token
 
-    unless @app
-      render json: { errors: ['Invalid X-Api-Key'] }, status: :unauthorized
+    unless @user
+      head status: :unauthorized
+      return false
     end
   end
 
@@ -30,7 +28,7 @@ class Api::ApiController < ActionController::Base
   # You can add field to user table request per min or define constant.
   # Here I am just passsing some random value
   def validate_rpm
-    if ApiRpmStore.threshold?(@current_user.id, @current_user.api_rpm) # 10 request per min
+    if ApiRpmStore.threshold?(@user.id, @user.api_rpm) # 10 request per min
       render json: { help: 'www.docandi.com' }, status: :too_many_requests
       return false
     end
@@ -63,34 +61,5 @@ class Api::ApiController < ActionController::Base
       headers["Total_pages"] = scope.total_pages
       headers["Current_page"] = scope.current_page
     end
-  end
-
-
-
-
-  protected
-  def authenticate_request!
-    unless user_id_in_token?
-      render json: { errors: ['Not Authenticated'] }, status: :unauthorized
-      return
-    end
-    @current_user = User.find(auth_token[:data][:user_id])
-  rescue JWT::VerificationError, JWT::DecodeError
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
-  end
-
-  private
-  def http_token
-      @http_token ||= if request.headers['Authorization'].present?
-        request.headers['Authorization'].split(' ').last
-      end
-  end
-
-  def auth_token
-    @auth_token ||= JsonWebToken.decode(http_token)
-  end
-
-  def user_id_in_token?
-    http_token && auth_token && auth_token[:user_id].to_i
   end
 end

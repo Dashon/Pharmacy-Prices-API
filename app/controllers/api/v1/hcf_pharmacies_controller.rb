@@ -9,6 +9,17 @@ class Api::V1::HcfPharmaciesController < Api::ApiController
     render json: @hcf_pharmacies
   end
 
+  # GET /hcf_pharmacies/prefix
+  def prefix
+    if params[:query].length >= 3
+      t = HcfPharmacy.arel_table
+      @hcf_pharmacies = HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).page(params[:page]).per(params[:limit])
+      render json: @hcf_pharmacies
+    else
+      render json: '"{"name":"Minimum 3 Characters"}'
+    end
+  end
+
   # GET /hcf_pharmacies/1
   # GET /hcf_pharmacies/1.json
   def show

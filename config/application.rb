@@ -12,7 +12,7 @@ module DocAndIApi
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options, :delete], :expose => ['Link','Total_pages','Current_page','access-token']
+        resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :put], :expose => ['Link','Total_pages','Current_page','access-token','uid']
       end
     end
     config.generators do |g|

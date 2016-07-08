@@ -28,11 +28,13 @@ ActiveRecord::Schema.define(version: 20160706175427) do
   create_table "contracted_pharmacies", force: :cascade do |t|
     t.integer  "hcf_pharmacy_id"
     t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "health_care_facility_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "contracted_pharmacies", ["hcf_pharmacy_id"], name: "index_contracted_pharmacies_on_hcf_pharmacy_id", using: :btree
+  add_index "contracted_pharmacies", ["health_care_facility_id"], name: "index_contracted_pharmacies_on_health_care_facility_id", using: :btree
   add_index "contracted_pharmacies", ["user_id"], name: "index_contracted_pharmacies_on_user_id", using: :btree
 
   create_table "dni_pharmacies", force: :cascade do |t|
@@ -244,6 +246,7 @@ ActiveRecord::Schema.define(version: 20160706175427) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "contracted_pharmacies", "hcf_pharmacies"
+  add_foreign_key "contracted_pharmacies", "health_care_facilities"
   add_foreign_key "contracted_pharmacies", "users"
   add_foreign_key "dni_pharmacies", "users"
   add_foreign_key "hcf_locations", "health_care_facilities"

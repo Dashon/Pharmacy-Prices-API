@@ -1,13 +1,12 @@
 class User < ActiveRecord::Base
-  include DeviseTokenAuth::Concerns::User
 
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :trackable, :validatable,
-          :confirmable, :omniauthable
+    :recoverable, :rememberable, :trackable, :validatable,
+    :confirmable
   belongs_to :health_care_facility
 
-  enum role: [:api_user, :team_admin, :doc_and_i_admin, :team_member]
+  enum role: {doc_and_i_admin: 18650, api_user: 1, team_member: 2, team_admin: 3}
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role
