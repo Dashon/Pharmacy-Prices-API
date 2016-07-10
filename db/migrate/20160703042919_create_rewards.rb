@@ -5,7 +5,7 @@ class CreateRewards < ActiveRecord::Migration
       t.string :type
       t.integer :cost
       t.string :description
-      t.binary :image
+      t.binary :image_url
       t.references :user, index: true, foreign_key: true
 
       t.timestamps null: false

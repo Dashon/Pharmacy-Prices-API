@@ -54,6 +54,6 @@ class Api::V1::RewardsController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def reward_params
-    params.require(:reward).permit(:name, :type, :cost, :description, :image, :user_id)
+    params.require(:reward).permit(:name, :type, :cost, :description, :image_url, :user_id)
   end
 end

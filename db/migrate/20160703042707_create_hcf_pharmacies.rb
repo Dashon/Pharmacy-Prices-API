@@ -6,7 +6,8 @@ class CreateHcfPharmacies < ActiveRecord::Migration
       t.references :dni_pharmacy, index: true, foreign_key: true
 
       t.timestamps null: false
-    end
+  end
+      add_index :hcf_pharmacies, [:health_care_facility_id, :dni_pharmacy_id], unique: true, :name => 'unique_dni_pharmacies'
   end
 end
 

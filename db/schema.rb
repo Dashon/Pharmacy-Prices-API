@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706175427) do
+ActiveRecord::Schema.define(version: 20160709154250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20160706175427) do
   end
 
   add_index "contracted_pharmacies", ["hcf_pharmacy_id"], name: "index_contracted_pharmacies_on_hcf_pharmacy_id", using: :btree
+  add_index "contracted_pharmacies", ["health_care_facility_id", "hcf_pharmacy_id"], name: "unique_contracted_pharmacies", unique: true, using: :btree
   add_index "contracted_pharmacies", ["health_care_facility_id"], name: "index_contracted_pharmacies_on_health_care_facility_id", using: :btree
   add_index "contracted_pharmacies", ["user_id"], name: "index_contracted_pharmacies_on_user_id", using: :btree
 
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(version: 20160706175427) do
     t.string   "short_code"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "image_url"
   end
 
   add_index "dni_pharmacies", ["short_code"], name: "index_dni_pharmacies_on_short_code", using: :btree
@@ -87,11 +89,15 @@ ActiveRecord::Schema.define(version: 20160706175427) do
     t.string   "city"
     t.string   "state"
     t.string   "zip"
-    t.binary   "logo"
+    t.string   "image_url"
     t.integer  "user_id"
     t.integer  "health_care_facility_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.string   "image_url_file_name"
+    t.string   "image_url_content_type"
+    t.integer  "image_url_file_size"
+    t.datetime "image_url_updated_at"
   end
 
   add_index "hcf_locations", ["health_care_facility_id"], name: "index_hcf_locations_on_health_care_facility_id", using: :btree
@@ -106,6 +112,7 @@ ActiveRecord::Schema.define(version: 20160706175427) do
   end
 
   add_index "hcf_pharmacies", ["dni_pharmacy_id"], name: "index_hcf_pharmacies_on_dni_pharmacy_id", using: :btree
+  add_index "hcf_pharmacies", ["health_care_facility_id", "dni_pharmacy_id"], name: "unique_dni_pharmacies", unique: true, using: :btree
   add_index "hcf_pharmacies", ["health_care_facility_id"], name: "index_hcf_pharmacies_on_health_care_facility_id", using: :btree
 
   create_table "hcf_rewards", force: :cascade do |t|
@@ -123,8 +130,13 @@ ActiveRecord::Schema.define(version: 20160706175427) do
   create_table "health_care_facilities", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "image_url"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "image_url_file_name"
+    t.string   "image_url_content_type"
+    t.integer  "image_url_file_size"
+    t.datetime "image_url_updated_at"
   end
 
   add_index "health_care_facilities", ["user_id"], name: "index_health_care_facilities_on_user_id", using: :btree
@@ -174,10 +186,14 @@ ActiveRecord::Schema.define(version: 20160706175427) do
     t.string   "type"
     t.integer  "cost"
     t.string   "description"
-    t.binary   "image"
+    t.binary   "image_url"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "image_url_file_name"
+    t.string   "image_url_content_type"
+    t.integer  "image_url_file_size"
+    t.datetime "image_url_updated_at"
   end
 
   add_index "rewards", ["user_id"], name: "index_rewards_on_user_id", using: :btree
@@ -222,7 +238,7 @@ ActiveRecord::Schema.define(version: 20160706175427) do
     t.string   "unconfirmed_email"
     t.string   "name"
     t.string   "nickname"
-    t.binary   "image"
+    t.string   "image_url"
     t.string   "email"
     t.string   "address"
     t.string   "city"
@@ -236,11 +252,17 @@ ActiveRecord::Schema.define(version: 20160706175427) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "health_care_facility_id"
+    t.integer  "invited_by_id"
+    t.string   "image_url_file_name"
+    t.string   "image_url_content_type"
+    t.integer  "image_url_file_size"
+    t.datetime "image_url_updated_at"
   end
 
   add_index "users", ["api_token"], name: "index_users_on_api_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["health_care_facility_id"], name: "index_users_on_health_care_facility_id", using: :btree
+  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
 
@@ -266,4 +288,5 @@ ActiveRecord::Schema.define(version: 20160706175427) do
   add_foreign_key "user_rewards", "hcf_rewards"
   add_foreign_key "user_rewards", "users"
   add_foreign_key "users", "health_care_facilities"
+  add_foreign_key "users", "users", column: "invited_by_id"
 end

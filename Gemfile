@@ -63,7 +63,8 @@ gem 'kaminari'
 gem 'hashids', '~> 1.0', '>= 1.0.2'
 gem 'where-or'
 gem 'jwt'
-
+gem 'paperclip'
+gem 'aws-sdk', '~> 2.3'
 group :development do
   gem 'better_errors'
   gem 'haml2slim'

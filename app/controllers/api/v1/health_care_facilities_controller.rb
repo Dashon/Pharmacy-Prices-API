@@ -52,6 +52,6 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def health_care_facility_params
-    params.permit(:name, :address, :phone, :email, :city, :state, :zip, :logo, :user_id)
+    params.permit(:name, :address, :phone, :email, :city, :state, :zip, :image_url, :user_id)
   end
 end

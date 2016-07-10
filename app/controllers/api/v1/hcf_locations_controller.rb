@@ -57,6 +57,8 @@ class Api::V1::HcfLocationsController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def hcf_location_params
-    params.require(:hcf_location).permit(:address, :phone, :email, :city, :state, :zip, :logo, :user_id, :name)
+    params.permit(:address, :phone, :email, :city, :state, :zip, :logo, :user_id, :name, :health_care_facility_id, :image_url)
   end
+
+
 end

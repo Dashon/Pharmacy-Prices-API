@@ -6,6 +6,16 @@ class User < ActiveRecord::Base
     :confirmable
   belongs_to :health_care_facility
 
+  validates :image_url,
+    attachment_content_type: { content_type: /\Aimage\/.*\Z/ },
+    attachment_size: { less_than: 2.megabytes }
+
+  has_attached_file :image_url, styles: {
+    thumb: '100x100>',
+    square: '200x200#',
+    medium: '300x300>'
+  },  default_url:'/assets/images/missing/default_:style.png'
+
   enum role: {doc_and_i_admin: 18650, api_user: 1, team_member: 2, team_admin: 3}
   after_initialize :set_default_role, :if => :new_record?
 
@@ -18,6 +28,7 @@ class User < ActiveRecord::Base
   before_create do |doc|
     doc.api_token = User.generate_api_key
     doc.api_rpm = DEFAULT_API_RPM if doc.api_rpm == 0
+    doc.uid = doc.email
   end
 
   def self.generate_api_key

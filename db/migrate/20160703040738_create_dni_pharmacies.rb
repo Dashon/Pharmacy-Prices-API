@@ -17,6 +17,7 @@ class CreateDniPharmacies < ActiveRecord::Migration
       t.string :npi
       t.string :short_code, index:true
       t.timestamps null: false
+      t.string :image_url
     end
   end
 end

@@ -36,7 +36,7 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration
       ## User Info
       t.string :name
       t.string :nickname
-      t.binary :image
+      t.string :image_url
       t.string :email
       t.string :address
       t.string :city

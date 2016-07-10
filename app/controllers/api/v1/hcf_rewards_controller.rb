@@ -53,6 +53,6 @@ class Api::V1::HcfRewardsController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def hcf_reward_params
-    params.require(:hcf_reward).permit(:reward_id, :health_care_facility_id, :user_id)
+    params.require(:hcf_reward).permit(:reward_id, :health_care_facility_id, :user_id, :image_url)
   end
 end

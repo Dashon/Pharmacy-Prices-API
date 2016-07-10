@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :pending_memberships
-  resources :pending_memberships
   api_constraints = if Rails.env.production?
     {subdomain: 'api'}
   else
