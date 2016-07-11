@@ -1,17 +1,12 @@
 class Api::V1::UsersController < Api::ApiController
-  before_action :authenticate_request!
-  before_action :admin_only, :except => [:show,:roles]
   after_filter only: [:prefix,:index] { set_pagination_header(:users) }
 
   def index
-    result = "{'error':'No Users'}"
+    result = current_user
     if current_user.doc_and_i_admin?
       @users = User.page(params[:page]).per(params[:limit])
-      result =@users
-
-    end
-
-    if current_user.team_admin?
+      result = @users
+    elsif current_user.team_admin?
       @users = User.where(:health_care_facility_id  == current_user.health_care_facility_id).page(params[:page]).per(params[:limit])
       result = @users
     end
@@ -33,8 +28,18 @@ class Api::V1::UsersController < Api::ApiController
     @user = User.find(params[:id])
     if @user == current_user
       @user.update_attributes(secure_params)
-    elsif current_user.doc_and_i_admin? || (current_user.team_admin? && current_user.health_care_facility_id == @user.health_care_facility_id)
-      @user.update_attributes(role_params)
+    end
+
+    if @user.doc_and_i_admin? && params[:role] != 18650
+      return render json: '"cannot change admin role"' ,:status => :unauthorized
+    end
+
+    if current_user.doc_and_i_admin?
+      @user.update_attributes(admin_params)
+    elsif (current_user.team_admin? && current_user.health_care_facility_id == @user.health_care_facility_id)
+      unless params[:role] == 18650
+        @user.update_attributes(role_params)
+      end
     end
 
     if @user.valid?
@@ -56,12 +61,11 @@ class Api::V1::UsersController < Api::ApiController
 
 
   def roles
-    if @user == current_user
-      allRoles = current_user.role
-    end
+
+    allRoles =  User.roles.select{|key, hash| key == current_user.role}
 
     if current_user.team_admin?
-      allRoles = User.roles.select{|key, hash| key != "doc_and_i_admin" || "api_user" }
+      allRoles = User.roles.select{|key, hash| key != 'doc_and_i_admin' && key != 'api_user' }
     elsif current_user.doc_and_i_admin?
       allRoles = User.roles
     end
@@ -71,11 +75,8 @@ class Api::V1::UsersController < Api::ApiController
 
   private
 
-  def admin_only
-    unless current_user.doc_and_i_admin?
-      render json: '"unauthorized"' ,:status => :unauthorized
-
-    end
+  def admin_params
+    params.require(:user).permit(:name, :role,:email,:password)
   end
 
   def secure_params

@@ -80,6 +80,13 @@ class Api::ApiController < ActionController::Base
   end
 
   private
+
+  def admin_only
+    unless current_user.doc_and_i_admin?
+      render json: '"unauthorized"' ,:status => :unauthorized
+    end
+  end
+
   def http_token
       @http_token ||= if request.headers['Authorization'].present?
         request.headers['Authorization'].split(' ').last

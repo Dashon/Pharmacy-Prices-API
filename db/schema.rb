@@ -54,9 +54,10 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.string   "stateList_id"
     t.string   "npi"
     t.string   "short_code"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
     t.string   "image_url"
+    t.boolean  "active",         default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   add_index "dni_pharmacies", ["short_code"], name: "index_dni_pharmacies_on_short_code", using: :btree
@@ -161,10 +162,11 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.string   "surescripts_id"
     t.string   "stateList_id"
     t.integer  "dni_pharmacy_id"
-    t.boolean  "approved"
+    t.boolean  "approved",        default: false, null: false
+    t.boolean  "denied",          default: false, null: false
     t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "pharmacy_edit_requests", ["dni_pharmacy_id"], name: "index_pharmacy_edit_requests_on_dni_pharmacy_id", using: :btree
@@ -183,7 +185,7 @@ ActiveRecord::Schema.define(version: 20160709154250) do
 
   create_table "rewards", force: :cascade do |t|
     t.string   "name"
-    t.string   "type"
+    t.string   "reward_type"
     t.integer  "cost"
     t.string   "description"
     t.binary   "image_url"
@@ -199,7 +201,7 @@ ActiveRecord::Schema.define(version: 20160709154250) do
   add_index "rewards", ["user_id"], name: "index_rewards_on_user_id", using: :btree
 
   create_table "surveys", force: :cascade do |t|
-    t.string   "type"
+    t.string   "survery_type"
     t.integer  "health_care_facility_id"
     t.integer  "user_id"
     t.datetime "created_at",              null: false

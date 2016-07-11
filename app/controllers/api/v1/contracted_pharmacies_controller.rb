@@ -2,9 +2,9 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
 
   before_action :set_contracted_pharmacy, only: [:show, :update, :destroy]
 
-  # GET /contracted_pharmacies
-  def index
-    @contracted_pharmacies = ContractedPharmacy.page(params[:page]).per(params[:limit])
+  # GET /contracted_pharmacies/list?
+   def list
+    @contracted_pharmacies = ContractedPharmacy.where(health_care_facility_id: params[:health_care_facility_id]).page(params[:page]).per(params[:limit])
     render json: @contracted_pharmacies
   end
 

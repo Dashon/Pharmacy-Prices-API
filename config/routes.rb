@@ -22,7 +22,12 @@ Rails.application.routes.draw do
       resources :drug_prices
       resources :pharmacies
       resources :drugs
-      resources :pharmacy_edit_requests
+      resources :pharmacy_edit_requests do
+       member do
+          get :approve
+          get :deny
+        end
+    end
       resources :hcf_locations
       resources :user_rewards
       resources :hcf_rewards
@@ -30,11 +35,13 @@ Rails.application.routes.draw do
       resources :awards
       resources :contracted_pharmacies do
         collection do
+          get :list
           get :prefix
         end
       end
       resources :hcf_pharmacies do
         collection do
+          get :list
           get :prefix
         end
       end

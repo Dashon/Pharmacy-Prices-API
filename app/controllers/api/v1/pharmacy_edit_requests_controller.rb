@@ -9,11 +9,25 @@ class Api::V1::PharmacyEditRequestsController < Api::ApiController
     render json: @pharmacy_edit_requests
   end
 
-  # GET /pharmacy_edit_requests/1
-  # GET /pharmacy_edit_requests/1.json
-  def show
 
+  def approve
+    @pharmacy_edit_requests = User.find(params[:id])
+      @pharmacy_edit_requests.approved = true
+      @pharmacy_edit_requests.denied = false
+      @pharmacy_edit_requests.user = current_user
+      @pharmacy_edit_requests.save
+    render json: @pharmacy_edit_requests
   end
+
+  def deny
+    @pharmacy_edit_requests = User.find(params[:id])
+      @pharmacy_edit_requests.approved = false
+      @pharmacy_edit_requests.denied = true
+      @pharmacy_edit_requests.user = current_user
+      @pharmacy_edit_requests.save
+    render json: @pharmacy_edit_requests
+  end
+
 
   # GET /pharmacy_edit_requests/new
   def new

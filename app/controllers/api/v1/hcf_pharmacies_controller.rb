@@ -2,10 +2,9 @@ class Api::V1::HcfPharmaciesController < Api::ApiController
   before_action :set_hcf_pharmacy, only: [:show, :update, :destroy]
   after_filter only: [:prefix,:index] { set_pagination_header(:hcf_pharmacies) }
 
-  # GET /hcf_pharmacies
-  # GET /hcf_pharmacies.json
-  def index
-    @hcf_pharmacies = HcfPharmacy.page(params[:page]).per(params[:limit])
+  # GET /hcf_pharmacies/list
+  def list
+    @hcf_pharmacies = HcfPharmacy.where(health_care_facility_id: params[:health_care_facility_id]).page(params[:page]).per(params[:limit])
     render json: @hcf_pharmacies
   end
 

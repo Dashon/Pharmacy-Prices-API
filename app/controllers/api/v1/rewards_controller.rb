@@ -1,6 +1,7 @@
 class Api::V1::RewardsController < Api::ApiController
   before_action :set_reward, only: [:show, :update, :destroy]
   after_filter only: [:prefix,:index] { set_pagination_header(:rewards) }
+  before_action :admin_only
 
   # GET /rewards
   # GET /rewards.json
@@ -54,6 +55,6 @@ class Api::V1::RewardsController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def reward_params
-    params.require(:reward).permit(:name, :type, :cost, :description, :image_url, :user_id)
+    params.permit(:name, :reward_type, :cost, :description, :image_url, :user_id)
   end
 end

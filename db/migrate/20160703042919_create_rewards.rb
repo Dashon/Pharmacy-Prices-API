@@ -2,7 +2,7 @@ class CreateRewards < ActiveRecord::Migration
   def change
     create_table :rewards do |t|
       t.string :name
-      t.string :type
+      t.string :reward_type
       t.integer :cost
       t.string :description
       t.binary :image_url

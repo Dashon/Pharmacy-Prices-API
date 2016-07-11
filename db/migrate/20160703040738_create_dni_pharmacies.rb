@@ -16,8 +16,9 @@ class CreateDniPharmacies < ActiveRecord::Migration
       t.string :stateList_id
       t.string :npi
       t.string :short_code, index:true
-      t.timestamps null: false
       t.string :image_url
+      t.boolean :active, null: false, default: false
+      t.timestamps null: false
     end
   end
 end

@@ -1,7 +1,7 @@
 class CreateSurveys < ActiveRecord::Migration
   def change
     create_table :surveys do |t|
-      t.string :type
+      t.string :survery_type
       t.references :health_care_facility, index: true, foreign_key: true
       t.references :user, index: true, foreign_key: true
 

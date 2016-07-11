@@ -13,7 +13,8 @@ class CreatePharmacyEditRequests < ActiveRecord::Migration
       t.string :surescripts_id
       t.string :stateList_id
       t.references :dni_pharmacy, index: true, foreign_key: true
-      t.boolean :approved
+      t.boolean :approved, null: false, default: false
+      t.boolean :denied, null: false, default: false
       t.references :user, index: true, foreign_key: true
 
       t.timestamps null: false

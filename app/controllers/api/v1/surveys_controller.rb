@@ -54,6 +54,6 @@ class Api::V1::SurveysController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def survey_params
-    params.require(:survey).permit(:type, :health_care_facility_id, :user_id)
+    params.require(:survey).permit(:survey_type, :health_care_facility_id, :user_id)
   end
 end
