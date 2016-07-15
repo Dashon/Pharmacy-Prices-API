@@ -15,7 +15,7 @@ class Api::V1::HcfPharmaciesController < Api::ApiController
       @hcf_pharmacies = HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).page(params[:page]).per(params[:limit])
       render json: @hcf_pharmacies
     else
-      render json: '"{"name":"Minimum 3 Characters"}'
+      render json: '"{"name":"Minimum 3 Characters"}"'
     end
   end
 

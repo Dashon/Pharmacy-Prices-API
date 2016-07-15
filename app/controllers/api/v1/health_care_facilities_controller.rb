@@ -1,5 +1,5 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
-  before_action :set_health_care_facility, only: [:show, :update, :destroy]
+  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted]
   after_filter only: [:prefix,:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
@@ -42,6 +42,14 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
   def destroy
     @health_care_facility.destroy
     render json: ''
+  end
+
+ def pharmacies 
+  render json: @health_care_facility.pharmacies
+  end
+
+  def contracted 
+  render json: @health_care_facility.contracted
   end
 
   private

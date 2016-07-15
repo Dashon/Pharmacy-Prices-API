@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :pharmacy_benifits
+  resources :benefits
   api_constraints = if Rails.env.production?
     {subdomain: 'api'}
   else
@@ -53,6 +55,10 @@ Rails.application.routes.draw do
       resources :questions
       resources :surveys
       resources :health_care_facilities do
+         member do
+          get :pharmacies
+          get :contracted
+        end
         collection do
           get :prefix
         end

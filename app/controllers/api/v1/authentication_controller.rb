@@ -33,10 +33,9 @@ class Api::V1::AuthenticationController < Api::ApiController
     return nil unless user and user.id
     {
       auth_token: JsonWebToken.encode({user_id: user.id}),
-      user: {id: user.id, email: user.email}
+      user: {id: user.id, name: user.name, hcf_id: user.health_care_facility_id}
     }
   end
-
 
   def user_params
     params.permit(:password, :password_confirmation)

@@ -65,6 +65,8 @@ gem 'where-or'
 gem 'jwt'
 gem 'paperclip'
 gem 'aws-sdk', '~> 2.3'
+gem 'geocoder'
+
 group :development do
   gem 'better_errors'
   gem 'haml2slim'

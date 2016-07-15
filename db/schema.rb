@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160709154250) do
+ActiveRecord::Schema.define(version: 20160711130136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20160709154250) do
   end
 
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
+
+  create_table "benefits", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "image_url"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "contracted_pharmacies", force: :cascade do |t|
     t.integer  "hcf_pharmacy_id"
@@ -46,8 +54,8 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.string   "city"
     t.string   "state"
     t.string   "zip"
-    t.string   "latitude"
-    t.string   "longitude"
+    t.float    "latitude"
+    t.float    "longitude"
     t.integer  "match_score"
     t.integer  "user_id"
     t.string   "surescripts_id"
@@ -55,9 +63,10 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.string   "npi"
     t.string   "short_code"
     t.string   "image_url"
-    t.boolean  "active",         default: false, null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.boolean  "active",           default: false, null: false
+    t.boolean  "overide_geocoder", default: false, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "dni_pharmacies", ["short_code"], name: "index_dni_pharmacies_on_short_code", using: :btree
@@ -91,10 +100,13 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.string   "state"
     t.string   "zip"
     t.string   "image_url"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.boolean  "overide_geocoder",        default: false, null: false
     t.integer  "user_id"
     t.integer  "health_care_facility_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "image_url_file_name"
     t.string   "image_url_content_type"
     t.integer  "image_url_file_size"
@@ -148,6 +160,16 @@ ActiveRecord::Schema.define(version: 20160709154250) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "pharmacy_benefits", force: :cascade do |t|
+    t.integer  "benefit_id"
+    t.integer  "dni_pharmacy_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "pharmacy_benefits", ["benefit_id"], name: "index_pharmacy_benefits_on_benefit_id", using: :btree
+  add_index "pharmacy_benefits", ["dni_pharmacy_id"], name: "index_pharmacy_benefits_on_dni_pharmacy_id", using: :btree
 
   create_table "pharmacy_edit_requests", force: :cascade do |t|
     t.string   "name"
@@ -281,6 +303,8 @@ ActiveRecord::Schema.define(version: 20160709154250) do
   add_foreign_key "hcf_rewards", "rewards"
   add_foreign_key "hcf_rewards", "users"
   add_foreign_key "health_care_facilities", "users"
+  add_foreign_key "pharmacy_benefits", "benefits"
+  add_foreign_key "pharmacy_benefits", "dni_pharmacies"
   add_foreign_key "pharmacy_edit_requests", "dni_pharmacies"
   add_foreign_key "pharmacy_edit_requests", "users"
   add_foreign_key "questions", "surveys"

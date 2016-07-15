@@ -9,6 +9,9 @@ class CreateHcfLocations < ActiveRecord::Migration
       t.string :state
       t.string :zip
       t.string :image_url
+      t.float :latitude
+      t.float :longitude
+      t.boolean :overide_geocoder, null: false, default: false
       t.references :user, index: true, foreign_key: true
       t.references :health_care_facility, index: true, foreign_key: true
       t.timestamps null: false

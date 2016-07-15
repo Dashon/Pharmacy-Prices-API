@@ -8,8 +8,8 @@ class CreateDniPharmacies < ActiveRecord::Migration
       t.string :city
       t.string :state
       t.string :zip
-      t.string :latitude
-      t.string :longitude
+      t.float :latitude
+      t.float :longitude
       t.integer :match_score
       t.references :user, index: true, foreign_key: true
       t.string :surescripts_id
@@ -18,6 +18,7 @@ class CreateDniPharmacies < ActiveRecord::Migration
       t.string :short_code, index:true
       t.string :image_url
       t.boolean :active, null: false, default: false
+      t.boolean :overide_geocoder, null: false, default: false
       t.timestamps null: false
     end
   end
