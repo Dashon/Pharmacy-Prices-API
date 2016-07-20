@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable,
     :confirmable
   belongs_to :health_care_facility
+  has_many :rewards
+  has_many :surveys
+  has_many :answers, :through => :surveys
 
   validates :image_url,
     attachment_content_type: { content_type: /\Aimage\/.*\Z/ },
@@ -23,6 +26,41 @@ class User < ActiveRecord::Base
     self.role ||= :team_member
   end
 
+  def month_points
+    points = 0
+    self.answers.each do |answer|
+      points = points + answer.question.value
+    end
+    points
+  end
+
+
+  def total_points
+    points = 0
+    self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+      points = points + answer.question.value
+    end
+    points
+  end
+
+  def team_month_points
+    points = 0
+    self.health_care_facility.users.each do |user|
+      self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+        points = points + answer.question.value
+      end
+    end
+      points
+  end
+   def team_total_points
+    points = 0
+    self.health_care_facility.users.each do |user|
+      self.answers.each do |answer|
+        points = points + answer.question.value
+      end
+    end
+      points
+  end
   DEFAULT_API_RPM =  10
 
   before_create do |doc|

@@ -1,5 +1,5 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
-  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted]
+  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map]
   after_filter only: [:prefix,:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
@@ -49,8 +49,16 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
   end
 
   def contracted 
-  render json: @health_care_facility.contracted
-  end
+  render json: @health_care_facility.contracted.map{|x| 
+    x.contracted = true 
+    x}
+    end
+
+  def map 
+  render json: ((@health_care_facility.contracted.map{|x| 
+    x.contracted = true 
+    x})+(@health_care_facility.pharmacies)).uniq
+    end
 
   private
   # Use callbacks to share common setup or constraints between actions.

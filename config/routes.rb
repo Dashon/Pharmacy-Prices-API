@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :users do
         member do
           get :unassociate
+          get :isAdmin
         end
         collection do
           get :roles
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
          member do
           get :pharmacies
           get :contracted
+          get :map
         end
         collection do
           get :prefix

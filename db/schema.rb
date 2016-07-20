@@ -223,7 +223,7 @@ ActiveRecord::Schema.define(version: 20160711130136) do
   add_index "rewards", ["user_id"], name: "index_rewards_on_user_id", using: :btree
 
   create_table "surveys", force: :cascade do |t|
-    t.string   "survery_type"
+    t.string   "survey_type"
     t.integer  "health_care_facility_id"
     t.integer  "user_id"
     t.datetime "created_at",              null: false

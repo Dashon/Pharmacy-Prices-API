@@ -9,5 +9,9 @@ Benefit.create(name:'24 Hour', description:"24 hour", image_url:"/assets/images/
 Benefit.create(name:'Drive-Thru', description:"Drive-Thru", image_url:"/assets/images/svg/drive-thru.svg")
 PharmacyBenefit.create(benefit_id:1, dni_pharmacy_id:1)
 PharmacyBenefit.create(benefit_id:2, dni_pharmacy_id:1)
+
+Survey.create(survey_type: "340b", health_care_facility_id: 1, user_id: 1)
+Question.create(name: "test1", value:122, survey_id:1)
+Answer.create(user_answer: "yes", question_id:1)
 user.health_care_facility_id = 1 
 user.save
