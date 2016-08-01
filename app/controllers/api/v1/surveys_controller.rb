@@ -23,8 +23,12 @@ class Api::V1::SurveysController < Api::ApiController
   # POST /surveys.json
   def create
     @survey = Survey.new(survey_params)
-
-    if @survey.save
+   if @survey.save
+    params[:answers].each do |answer|
+      answer['survey_id'] = @survey.id
+      answer = Answer.new(answer.json)
+      nanswer.save
+    end
       render json: @survey
     else
       render json: @survey.errors
@@ -54,6 +58,6 @@ class Api::V1::SurveysController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def survey_params
-    params.require(:survey).permit(:survey_type, :health_care_facility_id, :user_id)
+    params.permit(:survey_type, :health_care_facility_id, :user_id, :answers)
   end
 end

@@ -23,15 +23,6 @@ class Api::V1::UsersController < Api::ApiController
       render json: '"unauthorized"' ,:status => :unauthorized
     end
   end
-  def profile
-    @user = User.find(params[:id])
-
-    if current_user.doc_and_i_admin? || @user == current_user || current_user.health_care_facility_id == @user.health_care_facility_id
-      render json: @user
-    else
-      render json: '"unauthorized"' ,:status => :unauthorized
-    end
-  end
 
   def isAdmin
     render json: '{"isAdmin":' + (current_user.doc_and_i_admin? ? "true" : "false" ) + '}'

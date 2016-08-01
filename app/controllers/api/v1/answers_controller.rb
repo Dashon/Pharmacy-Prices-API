@@ -5,9 +5,7 @@ class Api::V1::AnswersController < Api::ApiController
   # GET /answers
   def index
     @answers = Answer.page params[:page]
-      render json: "unauthorized" ,:status => :unauthorized
-
-    # render json: @answers
+     render json: @answers
   end
 
   # GET /answers/1
@@ -54,7 +52,7 @@ class Api::V1::AnswersController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def answer_params
-    params.require(:answer).permit(:user_answer, :question_id)
+    params.permit(:user_answer, :question_id, :user_id)
   end
 
 end

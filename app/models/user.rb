@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   },  default_url:'/assets/images/missing/default_:style.png'
 
   enum role: {doc_and_i_admin: 18650, api_user: 1, team_member: 2, team_admin: 3}
+
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role
@@ -50,16 +51,29 @@ class User < ActiveRecord::Base
         points = points + answer.question.value
       end
     end
-      points
+    points
   end
-   def team_total_points
+
+  def team_total_points
     points = 0
     self.health_care_facility.users.each do |user|
       self.answers.each do |answer|
         points = points + answer.question.value
       end
     end
-      points
+    points
+  end
+
+  def trophies
+    self.rewards.where(reward_type: Reward.reward_type_list.trophy )
+  end
+
+  def avatars
+    self.rewards.where(reward_type:  Reward.reward_type_list.avatar)
+  end
+
+  def badges
+    self.rewards.where(reward_type: Reward.reward_type_list.badge)
   end
   DEFAULT_API_RPM =  10
 
