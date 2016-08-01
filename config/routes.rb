@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-
       post 'auth_user' => 'authentication#authenticate_user'
       put 'password' => 'authentication#update_password'
       delete 'sign_out' => 'authentication#sign_out'
@@ -26,11 +25,11 @@ Rails.application.routes.draw do
       resources :pharmacies
       resources :drugs
       resources :pharmacy_edit_requests do
-       member do
+        member do
           get :approve
           get :deny
         end
-    end
+      end
       resources :hcf_locations
       resources :user_rewards
       resources :hcf_rewards
@@ -54,9 +53,14 @@ Rails.application.routes.draw do
         end
       end
       resources :questions
-      resources :surveys
+      resources :surveys do
+        collection do
+          post :text_patient
+          post :email_patient
+        end
+      end
       resources :health_care_facilities do
-         member do
+        member do
           get :pharmacies
           get :contracted
           get :map

@@ -1,6 +1,4 @@
 class SurveySerializer < ActiveModel::Serializer
-  attributes :id, :survey_type
-  has_one :health_care_facility
-  has_one :user
+  attributes :id, :survey_type, :user_id, :health_care_facility_id
   has_many :answers
 end

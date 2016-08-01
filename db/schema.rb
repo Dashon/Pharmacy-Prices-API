@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160711130136) do
+ActiveRecord::Schema.define(version: 20160801143314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,11 +19,14 @@ ActiveRecord::Schema.define(version: 20160711130136) do
   create_table "answers", force: :cascade do |t|
     t.string   "user_answer"
     t.integer  "question_id"
+    t.integer  "survey_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
+  add_index "answers", ["question_id", "survey_id"], name: "unique_survey_answers", unique: true, using: :btree
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
+  add_index "answers", ["survey_id"], name: "index_answers_on_survey_id", using: :btree
 
   create_table "benefits", force: :cascade do |t|
     t.string   "name"
@@ -150,6 +153,7 @@ ActiveRecord::Schema.define(version: 20160711130136) do
     t.string   "image_url_content_type"
     t.integer  "image_url_file_size"
     t.datetime "image_url_updated_at"
+    t.integer  "team_goal"
   end
 
   add_index "health_care_facilities", ["user_id"], name: "index_health_care_facilities_on_user_id", using: :btree
@@ -198,12 +202,9 @@ ActiveRecord::Schema.define(version: 20160711130136) do
     t.string   "name"
     t.string   "description"
     t.integer  "value"
-    t.integer  "survey_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
-
-  add_index "questions", ["survey_id"], name: "index_questions_on_survey_id", using: :btree
 
   create_table "rewards", force: :cascade do |t|
     t.string   "name"
@@ -291,6 +292,7 @@ ActiveRecord::Schema.define(version: 20160711130136) do
   add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
 
   add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "surveys"
   add_foreign_key "contracted_pharmacies", "hcf_pharmacies"
   add_foreign_key "contracted_pharmacies", "health_care_facilities"
   add_foreign_key "contracted_pharmacies", "users"
@@ -307,7 +309,6 @@ ActiveRecord::Schema.define(version: 20160711130136) do
   add_foreign_key "pharmacy_benefits", "dni_pharmacies"
   add_foreign_key "pharmacy_edit_requests", "dni_pharmacies"
   add_foreign_key "pharmacy_edit_requests", "users"
-  add_foreign_key "questions", "surveys"
   add_foreign_key "rewards", "users"
   add_foreign_key "surveys", "health_care_facilities"
   add_foreign_key "surveys", "users"

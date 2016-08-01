@@ -35,7 +35,6 @@ class User < ActiveRecord::Base
     points
   end
 
-
   def total_points
     points = 0
     self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
@@ -65,15 +64,15 @@ class User < ActiveRecord::Base
   end
 
   def trophies
-    self.rewards.where(reward_type: Reward.reward_type_list.trophy )
+    self.rewards.where(reward_type: 'trophy' )
   end
 
   def avatars
-    self.rewards.where(reward_type:  Reward.reward_type_list.avatar)
+    self.rewards.where(reward_type:  'avatar')
   end
 
   def badges
-    self.rewards.where(reward_type: Reward.reward_type_list.badge)
+    self.rewards.where(reward_type: 'badge')
   end
   DEFAULT_API_RPM =  10
 

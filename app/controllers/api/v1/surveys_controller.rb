@@ -1,3 +1,7 @@
+require 'rubygems' # not necessary with ruby 1.9 but included for completeness
+require 'twilio-ruby' # put your own credentials here
+
+
 class Api::V1::SurveysController < Api::ApiController
   before_action :set_survey, only: [:show, :update, :destroy]
   after_filter only: [:prefix,:index] { set_pagination_header(:surveys) }
@@ -22,13 +26,19 @@ class Api::V1::SurveysController < Api::ApiController
   # POST /surveys
   # POST /surveys.json
   def create
-    @survey = Survey.new(survey_params)
-   if @survey.save
-    params[:answers].each do |answer|
-      answer['survey_id'] = @survey.id
-      answer = Answer.new(answer.json)
-      nanswer.save
-    end
+    @survey = Survey.new
+    @survey.user_id = current_user.id
+    @survey.health_care_facility_id = current_user.health_care_facility_id
+    @survey.survey_type = "340B"
+
+    if @survey.save
+      params[:answers].each do |answer|
+        newAnswer = Answer.new
+        newAnswer.user_answer = answer['user_answer']
+        newAnswer.question_id = answer['question_id']
+        newAnswer.survey_id = @survey.id
+        newAnswer.save
+      end
       render json: @survey
     else
       render json: @survey.errors
@@ -50,6 +60,29 @@ class Api::V1::SurveysController < Api::ApiController
     render json: ''
   end
 
+  def text_patient
+    account_sid = 'ACf22a16691c23c07d398c63a1a583e051'
+    auth_token = '52663079febd22dbb8f8d3971ba1f216'
+    @client = Twilio::REST::Client.new account_sid, auth_token
+    pharmacy = ContractedPharmacy.find(params[:contrated_pharamcy_id])
+
+
+    message = @client.account.messages.create({
+                                                :to => params[:contact_info],
+                                                :from => '+17082403776',
+                                                :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.name + " " +pharmacy.dni_pharmacy.full_street_address + " "+ pharmacy.dni_pharmacy.zip,
+    })
+
+    puts message.to
+
+    render json: "GOOD"
+  end
+
+  def email_patient
+
+  end
+
+  
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_survey
@@ -61,3 +94,12 @@ class Api::V1::SurveysController < Api::ApiController
     params.permit(:survey_type, :health_care_facility_id, :user_id, :answers)
   end
 end
+
+## SK35b5ddb56baaf13738b03405dba484f7
+## Qe2mi5jM4dV0iUInOeRaDUwiOFVp9Zjk
+#
+#TEST
+# AC075d58b157fdf54720dd4d900a54b8a8
+#  fc1f6cc1f3fa6e59c7c2a6c35980b956
+#
+#  +17348905123
