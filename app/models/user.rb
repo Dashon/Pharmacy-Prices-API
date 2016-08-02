@@ -55,9 +55,11 @@ class User < ActiveRecord::Base
 
   def team_total_points
     points = 0
-    self.health_care_facility.users.each do |user|
-      self.answers.each do |answer|
-        points = points + answer.question.value
+    if (self.health_care_facility)
+      self.health_care_facility.users.each do |user|
+        self.answers.each do |answer|
+          points = points + answer.question.value
+        end
       end
     end
     points
