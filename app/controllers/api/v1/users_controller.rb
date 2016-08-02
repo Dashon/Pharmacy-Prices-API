@@ -57,6 +57,16 @@ class Api::V1::UsersController < Api::ApiController
     end
   end
 
+def associateRewards
+	@user = User.find(params[:id])
+	Reward.all.each do |reward|
+	 user_reward = UserReward.new
+		user_reward.user_id = user.id
+		user_reward.hcf_reward_id = user.id
+  		  user_reward.save
+	end
+end
+
 
   def unassociate
     @user = User.find(params[:id])
