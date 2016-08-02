@@ -12,7 +12,7 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
   def prefix
     if params[:query].length >= 3
       t = ContractedPharmacy.arel_table
-      @contracted_pharmacies = ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).page(params[:page]).per(params[:limit])
+      @contracted_pharmacies = ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @contracted_pharmacies
     else
       render json: '"{"name":"Minimum 3 Characters"}'

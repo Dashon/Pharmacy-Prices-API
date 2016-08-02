@@ -17,6 +17,10 @@ class DniPharmacy < ActiveRecord::Base
     [address, city, state].compact.join(', ')
   end
 
+  def display_name
+    name+" "+address+" "+[city, state].compact.join(', ')
+  end
+
   attr_writer :contracted
 
   def contracted
