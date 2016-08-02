@@ -45,9 +45,11 @@ class User < ActiveRecord::Base
 
   def team_month_points
     points = 0
-    self.health_care_facility.users.each do |user|
-      self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
-        points = points + answer.question.value
+    if (self.health_care_facility)
+      self.health_care_facility.users.each do |user|
+        self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+          points = points + answer.question.value
+        end
       end
     end
     points
