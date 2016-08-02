@@ -46,7 +46,6 @@ group :development do
 end
 
 
-gem 'administrate'
 gem 'devise'
 gem 'pg'
 gem 'unicorn'
