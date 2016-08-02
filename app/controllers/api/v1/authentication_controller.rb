@@ -1,4 +1,5 @@
 class Api::V1::AuthenticationController < Api::ApiController
+
   def authenticate_user
     user = User.find_for_database_authentication(email: params[:email])
     if user.valid_password?(params[:password])
@@ -24,7 +25,7 @@ class Api::V1::AuthenticationController < Api::ApiController
       @user.send_reset_password_instructions
       render :text => "updated"
     else
-      render :text => "no such email"
+      render json: {errors: ['no such email']}, status: :unauthorized
     end
   end
 

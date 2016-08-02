@@ -3,7 +3,7 @@ class Api::ApiController < ActionController::Base
 
   #before_action :authenticate
   before_action :authenticate_manual
-  before_filter :authenticate_request! ,:except =>  :authenticate_user
+  before_filter :authenticate_request! ,:except =>  [:authenticate_user , :forgot_password]
   #before_action :validate_rpm
   before_action :check_pageination, only: [:index, :prefix]
   private
