@@ -3,15 +3,23 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
   before_action :set_contracted_pharmacy, only: [:show, :update, :destroy]
 
   # GET /contracted_pharmacies/list?
-   def list
+  def list
     @contracted_pharmacies = ContractedPharmacy.where(health_care_facility_id: params[:health_care_facility_id]).page(params[:page]).per(params[:limit])
     render json: @contracted_pharmacies
   end
 
- # GET /contracted_pharmacies/prefix
+  # GET /contracted_pharmacies/prefix
   def prefix
     if params[:query].length >= 3
-      t = ContractedPharmacy.arel_table
+      
+      if (!params[:health_care_facility_id])
+        params[:health_care_facility_id] = current_user.health_care_facility_id
+      end
+      unless current_user.doc_and_i_admin?
+        params[:health_care_facility_id] = current_user.health_care_facility_id
+      end
+
+      t = ContractedPharmacy.arel_table.where(health_care_facility_id: params[:health_care_facility_id])
       @contracted_pharmacies = ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @contracted_pharmacies
     else
