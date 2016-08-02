@@ -1,6 +1,6 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
   before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map]
-  after_filter only: [:prefix,:index] { set_pagination_header(:health_care_facilities) }
+  after_filter only: [:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
   def index
@@ -68,6 +68,6 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def health_care_facility_params
-    params.permit(:name, :address, :phone, :email, :city, :state, :zip, :image_url, :user_id)
+    params.permit(:name, :address, :phone, :city, :state, :zip, :image_url, :user_id)
   end
 end

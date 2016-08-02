@@ -1,6 +1,6 @@
 class Api::V1::HcfPharmaciesController < Api::ApiController
   before_action :set_hcf_pharmacy, only: [:show, :update, :destroy]
-  # after_filter only: [:prefix,:index] { set_pagination_header(:hcf_pharmacies) }
+  after_filter only: [:prefix,:index] { set_pagination_header(:hcf_pharmacies) }
 
   # GET /hcf_pharmacies/list
   def list
