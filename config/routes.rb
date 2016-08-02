@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
+      post 'invite_user' => 'authentication#invite_user'
       post 'auth_user' => 'authentication#authenticate_user'
       put 'password' => 'authentication#update_password'
       delete 'sign_out' => 'authentication#sign_out'
