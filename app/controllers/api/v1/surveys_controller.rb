@@ -69,7 +69,7 @@ class Api::V1::SurveysController < Api::ApiController
     message = @client.account.messages.create({
                                                 :to => params[:contact_info],
                                                 :from => '+17082403776',
-                                                :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.display_name + " "+ pharmacy.dni_pharmacy.zip,
+                                                :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.display_name,
     })
 
     render json: "{'result':'Sent'}"
