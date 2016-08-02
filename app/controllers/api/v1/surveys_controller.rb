@@ -66,23 +66,20 @@ class Api::V1::SurveysController < Api::ApiController
     @client = Twilio::REST::Client.new account_sid, auth_token
     pharmacy = ContractedPharmacy.find(params[:contrated_pharamcy_id])
 
-
     message = @client.account.messages.create({
                                                 :to => params[:contact_info],
                                                 :from => '+17082403776',
-                                                :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.name + " " +pharmacy.dni_pharmacy.full_street_address + " "+ pharmacy.dni_pharmacy.zip,
+                                                :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.display_name + " "+ pharmacy.dni_pharmacy.zip,
     })
 
-    puts message.to
-
-    render json: "GOOD"
+    render json: "{'result':'Sent'}"
   end
 
   def email_patient
 
   end
 
-  
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_survey
@@ -94,12 +91,3 @@ class Api::V1::SurveysController < Api::ApiController
     params.permit(:survey_type, :health_care_facility_id, :user_id, :answers)
   end
 end
-
-## SK35b5ddb56baaf13738b03405dba484f7
-## Qe2mi5jM4dV0iUInOeRaDUwiOFVp9Zjk
-#
-#TEST
-# AC075d58b157fdf54720dd4d900a54b8a8
-#  fc1f6cc1f3fa6e59c7c2a6c35980b956
-#
-#  +17348905123
