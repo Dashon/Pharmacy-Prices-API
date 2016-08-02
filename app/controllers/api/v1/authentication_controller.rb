@@ -18,11 +18,21 @@ class Api::V1::AuthenticationController < Api::ApiController
     end
   end
 
+  def forgot_password
+    @user = User.find_by_email(params[:email])
+    if @user.present?
+      @user.send_reset_password_instructions
+      render :text => "updated"
+    else
+      render :text => "no such email"
+    end
+  end
+
   def sign_out
     @user = User.find(current_user.id)
     if @user.update(user_params)
       sign_out @user
-     # render json: payload(@user)
+      # render json: payload(@user)
     else
       render json: {errors: ['Failed to update Password']}, status: :unauthorized
     end

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'auth_user' => 'authentication#authenticate_user'
       put 'password' => 'authentication#update_password'
       delete 'sign_out' => 'authentication#sign_out'
+      post 'forgot_password' => 'authentication#forgot_password'
       resources :users do
         member do
           get :unassociate

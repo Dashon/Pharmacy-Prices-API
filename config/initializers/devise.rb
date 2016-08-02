@@ -7,12 +7,12 @@ Devise.setup do |config|
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   config.secret_key = '6b179fac0de12f6f819321b21bc19892d6551fd82200dc5f8938a20ac16d9c31692355bedbaff1e5ea9629f5c8ec4659c262807cfcbeb09f6962f4f2ce01b00a'
-  
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'no-reply@docandi.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -105,7 +105,7 @@ Devise.setup do |config|
   # config.pepper = '4013dfa0a4f03bdd06f5d3ca1bfa181775465aeb63d5eb3280c738dcf4faa5769cecf2e5428c52370fb77ebd29e55645b8a7bf5f918626ad63ce15e4d1cb330c'
 
   # Send a notification email when the user's password is changed
-  # config.send_password_change_notification = false
+  config.send_password_change_notification = false
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -194,7 +194,7 @@ Devise.setup do |config|
   # Time interval you can reset your password with a reset password key.
   # Don't put a too small interval or your users won't have the time to
   # change their passwords.
-  config.reset_password_within = 6.hours
+  config.reset_password_within = 24.hours
 
   # When set to false, does not sign a user in automatically after their password is
   # reset. Defaults to true, so a user is signed in automatically after a reset.
