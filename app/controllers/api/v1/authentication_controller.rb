@@ -23,9 +23,9 @@ class Api::V1::AuthenticationController < Api::ApiController
     @user = User.find_by_email(params[:email])
     if @user.present?
       @user.send_reset_password_instructions
-      render :text => "updated"
+      render :text => {response: ['Reset Password Instructions Sent']}
     else
-      render json: {errors: ['no such email']}, status: :unauthorized
+      render json: {errors: ['No such email']}, status: :unauthorized
     end
   end
 
