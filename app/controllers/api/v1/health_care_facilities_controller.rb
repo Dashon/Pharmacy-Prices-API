@@ -4,7 +4,7 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
 
   # GET /health_care_facilities
   def index
-    @health_care_facilities = HealthCareFacility.page(params[:page]).per(params[:limit])
+    @health_care_facilities = HealthCareFacility.all
     render json: @health_care_facilities
   end
 
