@@ -19,8 +19,8 @@ class Api::V1::ContractedPharmaciesController < Api::ApiController
         params[:health_care_facility_id] = current_user.health_care_facility_id
       end
 
-      t = ContractedPharmacy.arel_table.where(health_care_facility_id: params[:health_care_facility_id])
-      @contracted_pharmacies = ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
+      t = ContractedPharmacy.where(health_care_facility_id: params[:health_care_facility_id])
+      @contracted_pharmacies = t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(ContractedPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @contracted_pharmacies
     else
       render json: '"{"name":"Minimum 3 Characters"}'

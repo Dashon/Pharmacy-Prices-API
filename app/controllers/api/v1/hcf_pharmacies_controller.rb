@@ -18,9 +18,9 @@ class Api::V1::HcfPharmaciesController < Api::ApiController
       unless current_user.doc_and_i_admin?
         params[:health_care_facility_id] = current_user.health_care_facility_id
       end
-      
-      t = HcfPharmacy.arel_table.where(health_care_facility_id: params[:health_care_facility_id])
-      @hcf_pharmacies = HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
+
+      t = HcfPharmacy.where(health_care_facility_id: params[:health_care_facility_id])
+      @hcf_pharmacies = t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @hcf_pharmacies
     else
       render json: '"{"name":"Minimum 3 Characters"}"'
