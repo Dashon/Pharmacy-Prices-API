@@ -20,7 +20,7 @@ class Api::V1::HcfPharmaciesController < Api::ApiController
       end
 
       t = HcfPharmacy.where(health_care_facility_id: params[:health_care_facility_id])
-      @hcf_pharmacies = t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(HcfPharmacy.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
+      @hcf_pharmacies = t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:name].matches("#{params[:query]}%")).or(t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:short_code].eq((params[:query]).upcase))).or(t.joins(:dni_pharmacy).where(DniPharmacy.arel_table[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @hcf_pharmacies
     else
       render json: '"{"name":"Minimum 3 Characters"}"'
