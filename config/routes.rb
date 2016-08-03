@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       post 'invite_user' => 'authentication#invite_user'
       post 'auth_user' => 'authentication#authenticate_user'
       put 'password' => 'authentication#update_password'
-      delete 'sign_out' => 'authentication#sign_out'
+      delete 'sign_out' => 'authentication#log_out'
       post 'forgot_password' => 'authentication#forgot_password'
       resources :users do
         member do

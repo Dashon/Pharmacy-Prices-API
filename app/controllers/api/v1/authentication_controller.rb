@@ -65,11 +65,11 @@ class Api::V1::AuthenticationController < Api::ApiController
     end
   end
 
-  def sign_out
+  def log_out
     @user = User.find(current_user.id)
     if @user != nil
       sign_out @user
-      # render json: payload(@user)
+      render json: payload(@user)
     else
       render json: {errors: ['Failed to logout']}, status: :unauthorized
     end
