@@ -67,7 +67,7 @@ class Api::V1::AuthenticationController < Api::ApiController
 
   def sign_out
     @user = User.find(current_user.id)
-    if @user.update(user_params)
+    if @user != nil
       sign_out @user
       # render json: payload(@user)
     else
