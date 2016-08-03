@@ -37,4 +37,12 @@ class HealthCareFacility < ActiveRecord::Base
     users.sort_by { |hsh| hsh[:points] }.reverse.take(3)
   end
 
+
+  def month_trophy
+    Reward.where(reward_type: @date.strftime("%B")).first
+  end
+
+  def next_reward
+    Reward.where(reward_type: 'next').first
+  end
 end
