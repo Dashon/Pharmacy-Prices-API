@@ -83,7 +83,7 @@ class Api::V1::UsersController < Api::ApiController
   private
 
   def admin_params
-    params.require(:user).permit(:name, :role,:email,:password, :health_care_facility_id)
+    params.require(:user).permit(:name, :role,:email,:password, :health_care_facility_id, :image_url)
   end
 
   def secure_params
