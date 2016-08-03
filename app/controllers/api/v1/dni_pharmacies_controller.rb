@@ -17,7 +17,7 @@ class Api::V1::DniPharmaciesController < Api::ApiController
       @dni_pharmacies = DniPharmacy.where(t[:name].matches("#{params[:query]}%")).or(DniPharmacy.where(short_code: (params[:query].upcase))).or(DniPharmacy.where(t[:address].matches("#{params[:query]}%"))).page(params[:page]).per(params[:limit])
       render json: @dni_pharmacies
     else
-      render json: '"{"name":"Minimum 3 Characters"}"'
+      render json: '{"name":"Minimum 3 Characters"}'
     end
   end
 

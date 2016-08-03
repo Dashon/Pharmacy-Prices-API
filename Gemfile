@@ -66,6 +66,7 @@ gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
 gem 'capistrano-rbenv', github: "capistrano/rbenv"
 gem 'twilio-ruby', '~> 4.11.1'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'better_errors'
