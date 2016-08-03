@@ -59,9 +59,16 @@ class Api::V1::UsersController < Api::ApiController
 
   def associate_rewards
     @user = User.find(params[:id])
-    HcfReward.joins(:reward).where(Reward.arel_table[:reward_type].eq("avatar")).each do |reward|
-      UserReward.create(user_id: user.id, hcf_reward_id: reward.id)
+
+    t = Reward.arel_table
+
+    HcfReward.joins(:reward).where(t[:reward_type].matches("#{'starter_'}%")).each do |reward|
+      existing = UserReward.where(user_id:  @user.id, hcf_reward_id: reward.id ).first
+      if existing == nil
+        UserReward.create(user_id: @user.id, hcf_reward_id: reward.id)
+      end
     end
+    render json: @user
   end
 
 

@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable,
     :confirmable
   belongs_to :health_care_facility
-  has_many :rewards
+  has_many :user_rewards
+  has_many :hcf_rewards, :through => :user_rewards
+  has_many :rewards, :through => :hcf_rewards
   has_many :surveys
   has_many :answers, :through => :surveys
 

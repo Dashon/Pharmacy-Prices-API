@@ -55,8 +55,13 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
   end
 
   def associate_rewards
-    Reward.where(reward_type: "starter_avatar").each do |reward|
-      HcfReward.create(reward_id: reward.id, health_care_facility_id: @health_care_facility.id)
+      t = Reward.arel_table
+
+    Reward.where(t[:reward_type].matches("#{'starter_'}%")).each do |reward|
+      existing = HcfReward.where(health_care_facility_id:  @health_care_facility.id, reward_id: reward.id ).first
+      if existing == nil
+        HcfReward.create(reward_id: reward.id, health_care_facility_id: @health_care_facility.id)
+      end
     end
     render json: @health_care_facility
   end
