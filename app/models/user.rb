@@ -70,15 +70,16 @@ class User < ActiveRecord::Base
   end
 
   def trophies
-    self.rewards.where("reward_type LIKE (?)", "%#{'trophy'}%")
+    self.rewards.where(reward_type: 'trophy') +  Reward.where(reward_type: 'starter_trophy') 
   end
 
   def avatars
-    self.rewards.where("reward_type LIKE (?)", "%#{'avatar'}%")
+    self.rewards.where(reward_type: 'avatar') +  Reward.where(reward_type: 'starter_avatar') 
   end
 
   def badges
-    self.rewards.where("reward_type LIKE (?)", "%#{'badge'}%")
+    self.rewards.where(reward_type: 'badge') +  Reward.where(reward_type: 'starter_badge') 
+
   end
   DEFAULT_API_RPM =  1000
 

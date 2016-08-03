@@ -18,7 +18,6 @@ Rails.application.routes.draw do
         member do
           get :unassociate
           get :isAdmin
-          get :associate_rewards
         end
         collection do
           get :roles

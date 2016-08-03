@@ -57,21 +57,6 @@ class Api::V1::UsersController < Api::ApiController
     end
   end
 
-  def associate_rewards
-    @user = User.find(params[:id])
-
-    t = Reward.arel_table
-
-    HcfReward.joins(:reward).where(t[:reward_type].matches("#{'starter_'}%")).each do |reward|
-      existing = UserReward.where(user_id:  @user.id, hcf_reward_id: reward.id ).first
-      if existing == nil
-        UserReward.create(user_id: @user.id, hcf_reward_id: reward.id)
-      end
-    end
-    render json: @user
-  end
-
-
   def unassociate
     @user = User.find(params[:id])
     if current_user.doc_and_i_admin?  || (current_user.team_admin? && current_user.health_care_facility_id == @user.health_care_facility_id)
