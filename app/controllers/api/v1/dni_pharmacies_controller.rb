@@ -48,31 +48,32 @@ class Api::V1::DniPharmaciesController < Api::ApiController
   # PATCH/PUT /dni_pharmacies/1
   def update
     if @dni_pharmacy.update(dni_pharmacy_params)
+      t4benefit = Benefit.where(name: '24 Hour').first
+      dtbenefit = Benefit.where(name: 'Drive-Thru').first
+
+      dtexisting = PharmacyBenefit.where(dni_pharmacy_id:  @dni_pharmacy.id, benefit_id: dtbenefit.id ).first
+      t4existing = PharmacyBenefit.where(dni_pharmacy_id:  @dni_pharmacy.id, benefit_id: t4benefit.id ).first
+
       if(params[:t4Hr])
-        benefit = Benifit.where(name: '24 Hour')
-        if benefit != null
-          existing = PharmacyBenifit.where(dniPharmacy_id: dni_pharmacy.id, benefit_id: benefit.id )
-          if existing == null
-            pb = PharmacyBenifit.new
-            pb.dniPharmacy_id = dni_pharmacy.id
-            pb.benefit_id = benefit.id
-            pb.save
-          end
+        if t4benefit != nil && t4existing == nil
+          PharmacyBenefit.create(benefit_id: t4benefit.id, dni_pharmacy_id: @dni_pharmacy.id)
+        end
+      else
+        if t4existing != nil
+          t4existing.destroy
         end
       end
 
       if(params[:dthru])
-        benefit = Benifit.where(name: 'Drive-Thru')
-        if benefit != null &&
-            existing = PharmacyBenifit.where(dniPharmacy_id: dni_pharmacy.id, benefit_id: benefit.id )
-          if existing == null
-            pb = PharmacyBenifit.new
-            pb.dniPharmacy_id = dni_pharmacy.id
-            pb.benefit_id = benefit.id
-            pb.save
-          end
+        if dtbenefit != nil && dtexisting == nil
+          PharmacyBenefit.create(benefit_id: dtbenefit.id, dni_pharmacy_id: @dni_pharmacy.id)
+        end
+      else
+        if dtexisting != nil
+          dtexisting.destroy
         end
       end
+
       render json: @dni_pharmacy
     else
       render json: @dni_pharmacy.errors
