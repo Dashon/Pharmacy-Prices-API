@@ -1,5 +1,5 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
-  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map]
+  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map,:associate_rewards]
   after_filter only: [:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
@@ -10,13 +10,13 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
 
   # GET /health_care_facilities/1
   def show
-      render json: @health_care_facility
+    render json: @health_care_facility
   end
 
   # GET /health_care_facilities/new
   def new
     @health_care_facility = HealthCareFacility.new
-      render json: @health_care_facility
+    render json: @health_care_facility
   end
 
   # POST /health_care_facilities
@@ -44,21 +44,28 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
     render json: ''
   end
 
- def pharmacies 
-  render json: @health_care_facility.pharmacies
+  def pharmacies
+    render json: @health_care_facility.pharmacies
   end
 
-  def contracted 
-  render json: @health_care_facility.contracted.map{|x| 
-    x.contracted = true 
+  def contracted
+    render json: @health_care_facility.contracted.map{|x|
+      x.contracted = true
     x}
-    end
+  end
 
-  def map 
-  render json: ((@health_care_facility.contracted.map{|x| 
-    x.contracted = true 
-    x})+(@health_care_facility.pharmacies)).uniq
+  def associate_rewards
+    Reward.where(reward_type: "starter_avatar").each do |reward|
+      HcfReward.create(reward_id: reward.id, health_care_facility_id: @health_care_facility.id)
     end
+    render json: @health_care_facility
+  end
+
+  def map
+    render json: ((@health_care_facility.contracted.map{|x|
+                     x.contracted = true
+    x})+(@health_care_facility.pharmacies)).uniq
+  end
 
   private
   # Use callbacks to share common setup or constraints between actions.
