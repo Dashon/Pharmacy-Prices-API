@@ -1,5 +1,5 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
-  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map,:associate_rewards]
+  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map,:seed_clinic]
   after_filter only: [:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
@@ -54,13 +54,22 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
     x}
   end
 
-  def associate_rewards
-      t = Reward.arel_table
+  def seed_clinic
+    t = Reward.arel_table
 
     Reward.where(t[:reward_type].matches("#{'starter_'}%")).each do |reward|
       existing = HcfReward.where(health_care_facility_id:  @health_care_facility.id, reward_id: reward.id ).first
       if existing == nil
         HcfReward.create(reward_id: reward.id, health_care_facility_id: @health_care_facility.id)
+      end
+    end
+
+    @health_care_facility.users.each do |user|
+      HcfReward.joins(:reward).where(t[:reward_type].matches("#{'starter_'}%")).each do |reward|
+        existing = UserReward.where(user_id:  user.id, hcf_reward_id: reward.id ).first
+        if existing == nil
+          UserReward.create(user_id: user.id, hcf_reward_id: reward.id)
+        end
       end
     end
     render json: @health_care_facility

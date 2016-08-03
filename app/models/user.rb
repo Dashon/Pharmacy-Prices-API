@@ -70,17 +70,17 @@ class User < ActiveRecord::Base
   end
 
   def trophies
-    self.rewards.where(reward_type: 'trophy' )
+    self.rewards.where("reward_type LIKE (?)", "%#{'trophy'}%")
   end
 
   def avatars
-    self.rewards.where(reward_type:  'avatar')
+    self.rewards.where("reward_type LIKE (?)", "%#{'avatar'}%")
   end
 
   def badges
-    self.rewards.where(reward_type: 'badge')
+    self.rewards.where("reward_type LIKE (?)", "%#{'badge'}%")
   end
-  DEFAULT_API_RPM =  10
+  DEFAULT_API_RPM =  1000
 
   before_create do |doc|
     doc.api_token = User.generate_api_key

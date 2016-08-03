@@ -67,7 +67,7 @@ Rails.application.routes.draw do
           get :pharmacies
           get :contracted
           get :map
-          get :associate_rewards
+          get :seed_clinic
         end
         collection do
           get :prefix
