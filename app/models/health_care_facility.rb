@@ -39,7 +39,7 @@ class HealthCareFacility < ActiveRecord::Base
 
 
   def month_trophy
-    Reward.where(reward_type: @date.strftime("%B")).first
+    Reward.where(reward_type: Date.today.strftime("%B")).first
   end
 
   def next_reward
