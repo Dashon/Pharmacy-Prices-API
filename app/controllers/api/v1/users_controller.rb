@@ -87,7 +87,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def secure_params
-    params.require(:user).permit(:name)
+    params.require(:user).permit(:name, :image_url)
   end
 
 
