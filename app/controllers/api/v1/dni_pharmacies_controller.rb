@@ -48,6 +48,31 @@ class Api::V1::DniPharmaciesController < Api::ApiController
   # PATCH/PUT /dni_pharmacies/1
   def update
     if @dni_pharmacy.update(dni_pharmacy_params)
+      if(params[:t4Hr])
+        benefit = Benifit.where(name: '24 Hour')
+        if benefit != null
+          existing = PharmacyBenifit.where(dniPharmacy_id: dni_pharmacy.id, benefit_id: benefit.id )
+          if existing == null
+            pb = PharmacyBenifit.new
+            pb.dniPharmacy_id = dni_pharmacy.id
+            pb.benefit_id = benefit.id
+            pb.save
+          end
+        end
+      end
+
+      if(params[:dthru])
+        benefit = Benifit.where(name: 'Drive-Thru')
+        if benefit != null &&
+            existing = PharmacyBenifit.where(dniPharmacy_id: dni_pharmacy.id, benefit_id: benefit.id )
+          if existing == null
+            pb = PharmacyBenifit.new
+            pb.dniPharmacy_id = dni_pharmacy.id
+            pb.benefit_id = benefit.id
+            pb.save
+          end
+        end
+      end
       render json: @dni_pharmacy
     else
       render json: @dni_pharmacy.errors
