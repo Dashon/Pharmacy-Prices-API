@@ -38,7 +38,7 @@ class Api::V1::UsersController < Api::ApiController
       params[:health_care_facility_id] = current_user.health_care_facility_id
     end
 
-    if @user.doc_and_i_admin? && params[:role] != 18650
+    if @user.doc_and_i_admin? && params[:role] && params[:role] != 18650
       return render json: '"cannot change admin role"' ,:status => :unauthorized
     end
 
