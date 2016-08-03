@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
     points = 0
     if (self.health_care_facility)
       self.health_care_facility.users.each do |user|
-        self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+        user.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
           points = points + answer.question.value
         end
       end
@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     points = 0
     if (self.health_care_facility)
       self.health_care_facility.users.each do |user|
-        self.answers.each do |answer|
+        user.answers.each do |answer|
           points = points + answer.question.value
         end
       end
