@@ -4,7 +4,7 @@ class DniPharmacy < ActiveRecord::Base
   has_many :pharmacy_benefits
   has_many :benefits, :through => :pharmacy_benefits
 
-  geocoded_by :full_street_address   # can also be an IP address
+  geocoded_by :full_street_address 
   after_validation :geocode ,if: ->(obj){ (obj.address.present? and obj.address_changed? and !obj.overide_geocoder?) or (obj.latitude.nil? or obj.longitude.nil?) }
 
   def set_short_code
