@@ -78,8 +78,8 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
     @health_care_facility.users.each do |user|
       alreadyGoing = alreadyGoing + user.answers.where(question_id: 1).where(user_answer: 'answer-yes').where(created_at: start..stop).count
       notGoing = notGoing + user.answers.where(question_id: 1).where(user_answer: 'answer-no').where(created_at: start..stop).count
-      refusedToChange = refusedToChange + user.answers.where(question_id: 6).where(user_answer: 'answer-no').where(created_at: start..stop).count
-      agreedToChange = agreedToChange + user.answers.where(question_id: 6).where(user_answer: 'answer-yes').where(created_at: start..stop).count
+      refusedToChange = refusedToChange + user.answers.where(question_id: 6).where(user_answer: 'no-change').where(created_at: start..stop).count
+      agreedToChange = agreedToChange + user.answers.where(question_id: 6).where(user_answer: 'yes-change').where(created_at: start..stop).count
       totalSurveys = totalSurveys + user.surveys.where(created_at: start..stop).count
       totalPatients = totalPatients + user.survey_days.where(created_at: start..stop).sum(:expected_patients)
 
