@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :rewards, :through => :hcf_rewards
   has_many :surveys
   has_many :answers, :through => :surveys
+  has_many :survey_days
 
   # validates :image_url,
   #   attachment_content_type: { content_type: /\Aimage\/.*\Z/ },
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
     self.role ||= :team_member
   end
 
-  def month_points
+  def total_points
     points = 0
     self.answers.each do |answer|
       points = points + answer.question.value
@@ -37,9 +38,9 @@ class User < ActiveRecord::Base
     points
   end
 
-  def total_points
+  def month_points
     points = 0
-    self.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+    self.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
       points = points + answer.question.value
     end
     points
@@ -49,7 +50,7 @@ class User < ActiveRecord::Base
     points = 0
     if (self.health_care_facility)
       self.health_care_facility.users.each do |user|
-        user.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
+        user.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
           points = points + answer.question.value
         end
       end
@@ -70,17 +71,33 @@ class User < ActiveRecord::Base
   end
 
   def trophies
-    self.rewards.where(reward_type: 'trophy') +  Reward.where(reward_type: 'starter_trophy') 
+    self.rewards.where(reward_type: 'trophy') +  Reward.where(reward_type: 'starter_trophy')
   end
 
   def avatars
-    self.rewards.where(reward_type: 'avatar') +  Reward.where(reward_type: 'starter_avatar') 
+    self.rewards.where(reward_type: 'avatar') +  Reward.where(reward_type: 'starter_avatar')
   end
 
   def badges
-    self.rewards.where(reward_type: 'badge') +  Reward.where(reward_type: 'starter_badge') 
-
+    self.rewards.where(reward_type: 'badge') +  Reward.where(reward_type: 'starter_badge')
   end
+
+  def survey_day
+    survey_day = self.survey_days.where(created_at: Time.zone.now.beginning_of_day..Time.now).first
+    if(!survey_day.present?)
+      survey_day = SurveyDay.new
+      survey_day.user_id = self.id
+      survey_day.health_care_facility_id = self.health_care_facility_id
+      survey_day.expected_patients = 0
+      survey_day.save!
+    end
+    survey_day.as_json(only: [:id, :expected_patients])
+  end
+
+ def todays_surveys
+    self.surveys.where(created_at: Time.zone.now.beginning_of_day..Time.now).count
+  end
+
   DEFAULT_API_RPM =  1000
 
   before_create do |doc|

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         end
       end
       resources :hcf_locations
+      resources :survey_days
       resources :user_rewards
       resources :hcf_rewards
       resources :rewards

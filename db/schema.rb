@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801143314) do
+ActiveRecord::Schema.define(version: 20160905201206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,15 +223,28 @@ ActiveRecord::Schema.define(version: 20160801143314) do
 
   add_index "rewards", ["user_id"], name: "index_rewards_on_user_id", using: :btree
 
+  create_table "survey_days", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "health_care_facility_id"
+    t.integer  "expected_patients"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "survey_days", ["health_care_facility_id"], name: "index_survey_days_on_health_care_facility_id", using: :btree
+  add_index "survey_days", ["user_id"], name: "index_survey_days_on_user_id", using: :btree
+
   create_table "surveys", force: :cascade do |t|
     t.string   "survey_type"
     t.integer  "health_care_facility_id"
     t.integer  "user_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "survey_day_id"
   end
 
   add_index "surveys", ["health_care_facility_id"], name: "index_surveys_on_health_care_facility_id", using: :btree
+  add_index "surveys", ["survey_day_id"], name: "index_surveys_on_survey_day_id", using: :btree
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
 
   create_table "user_rewards", force: :cascade do |t|
@@ -310,7 +323,10 @@ ActiveRecord::Schema.define(version: 20160801143314) do
   add_foreign_key "pharmacy_edit_requests", "dni_pharmacies"
   add_foreign_key "pharmacy_edit_requests", "users"
   add_foreign_key "rewards", "users"
+  add_foreign_key "survey_days", "health_care_facilities"
+  add_foreign_key "survey_days", "users"
   add_foreign_key "surveys", "health_care_facilities"
+  add_foreign_key "surveys", "survey_days"
   add_foreign_key "surveys", "users"
   add_foreign_key "user_rewards", "hcf_rewards"
   add_foreign_key "user_rewards", "users"

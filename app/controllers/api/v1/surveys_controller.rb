@@ -30,6 +30,7 @@ class Api::V1::SurveysController < Api::ApiController
     @survey.user_id = current_user.id
     @survey.health_care_facility_id = current_user.health_care_facility_id
     @survey.survey_type = "340B"
+    @survey.survey_day_id = current_user.survey_day.id
 
     if @survey.save
       params[:answers].each do |answer|
@@ -68,7 +69,7 @@ class Api::V1::SurveysController < Api::ApiController
 
     message = @client.account.messages.create({
                                                 :to => params[:contact_info],
-                                                :from => '+17082403776',
+                                                :from => ContractedPharmacy.dni_pharmacy.phone || '+17082403776',
                                                 :body => "Hello, Your new Pharmacy is: " +  pharmacy.dni_pharmacy.display_name,
     })
 

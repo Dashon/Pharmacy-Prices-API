@@ -1,0 +1,2 @@
+module SurveyDaysHelper
+end
