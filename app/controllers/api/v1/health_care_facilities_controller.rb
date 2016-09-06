@@ -28,7 +28,7 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
       render json: @health_care_facility.errors
     end
   end
-
+ 
   # PATCH/PUT /health_care_facilities/1
   def update
     if @health_care_facility.update(health_care_facility_params)
