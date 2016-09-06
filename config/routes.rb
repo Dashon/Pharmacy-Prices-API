@@ -68,6 +68,7 @@ Rails.application.routes.draw do
           get :contracted
           get :map
           get :seed_clinic
+          get :stats
         end
         collection do
           get :prefix

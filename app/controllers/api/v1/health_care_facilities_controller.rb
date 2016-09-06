@@ -1,5 +1,5 @@
 class Api::V1::HealthCareFacilitiesController < Api::ApiController
-  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map,:seed_clinic]
+  before_action :set_health_care_facility, only: [:show, :update, :destroy,:pharmacies, :contracted,:map,:seed_clinic, :stats]
   after_filter only: [:index] { set_pagination_header(:health_care_facilities) }
 
   # GET /health_care_facilities
@@ -55,7 +55,6 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
   end
 
   def seed_clinic
- 
     render json: @health_care_facility
   end
 
@@ -63,6 +62,25 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
     render json: ((@health_care_facility.contracted.map{|x|
                      x.contracted = true
     x})+(@health_care_facility.pharmacies)).uniq
+  end
+
+  def stats
+    alreadyGoing = 0
+    notGoing = 0
+    refusedToChange = 0
+    agreedToChange = 0
+
+    start = Time.at(params[:start].to_i).to_datetime
+    stop = Time.at(params[:stop].to_i).to_datetime
+
+    @health_care_facility.users.each do |user|
+      alreadyGoing = alreadyGoing + user.answers.where(question_id: 1).where(user_answer: 'answer-yes').where(created_at: start..stop).count
+      notGoing = notGoing + user.answers.where(question_id: 1).where(user_answer: 'answer-no').where(created_at: start..stop).count
+      refusedToChange = notGoing + user.answers.where(question_id: 6).where(user_answer: 'answer-no').where(created_at: start..stop).count
+      agreedToChange = notGoing + user.answers.where(question_id: 6).where(user_answer: 'answer-yes').where(created_at: start..stop).count
+    end
+
+     render json: {alreadyGoing:alreadyGoing,notGoing:notGoing,refusedToChange:refusedToChange,agreedToChange:agreedToChange}
   end
 
   private
@@ -75,4 +93,6 @@ class Api::V1::HealthCareFacilitiesController < Api::ApiController
   def health_care_facility_params
     params.permit(:name, :address, :phone, :city, :state, :zip, :image_url, :user_id)
   end
+
+   
 end
