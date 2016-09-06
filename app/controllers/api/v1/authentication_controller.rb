@@ -5,7 +5,7 @@ class Api::V1::AuthenticationController < Api::ApiController
     if user.valid_password?(params[:password])
       render json: payload(user)
     else
-      render json: {errors: ['Invalid Username/Password']}, status: :unauthorized
+      render json: {errors: ['Invalid Username/Password']}, :status=>422
     end
   end
 
@@ -15,7 +15,7 @@ class Api::V1::AuthenticationController < Api::ApiController
       sign_in @user, :bypass => true
       render json: payload(@user)
     else
-      render json: {errors: ['Failed to update Password']}, status: :422
+      render json: {errors: ['Failed to update Password']}, :status=>422
     end
   end
 
@@ -71,7 +71,7 @@ class Api::V1::AuthenticationController < Api::ApiController
       sign_out @user
       render json: payload(@user)
     else
-      render json: {errors: ['Failed to logout']}, status: :422
+      render json: {errors: ['Failed to logout']}, :status=>422
     end
   end
   private
