@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
       survey_day.expected_patients = 0
       survey_day.save!
     end
-    survey_day.as_json(only: [:id, :expected_patients])
+    survey_day
   end
 
  def todays_surveys
