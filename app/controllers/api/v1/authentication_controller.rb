@@ -90,7 +90,7 @@ class Api::V1::AuthenticationController < Api::ApiController
       else
         render :json=> user.errors, :status=>422
       end
-    elsif (current_user.team_admin? && current_user.health_care_facility_id == user.health_care_facility_id)
+    elsif (current_user.team_admin? && current_user.health_care_facility_id == params[:health_care_facility_id])
       unless params[:role] == 18650
 
         params[:health_care_facility_id] = current_user.health_care_facility_id
