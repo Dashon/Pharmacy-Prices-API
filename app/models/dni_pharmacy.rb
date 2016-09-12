@@ -18,7 +18,7 @@ class DniPharmacy < ActiveRecord::Base
   end
 
   def display_name
-    name+" - "+address+" "+[city, state].compact.join(', ')
+    name+" - "+address+" "+[city, state].compact.join(', ') + zip
   end
 
   attr_writer :contracted
