@@ -42,7 +42,6 @@ class Api::V1::AuthenticationController < Api::ApiController
 
     if current_user.doc_and_i_admin?
       user = User.new(invite_params)
-      user.image_url ="http://doc-and-i-bucket.s3.amazonaws.com/rewards/image_urls/000/000/005/original/data?1470228088"
       user.skip_confirmation!
       if user.save
         # user.send_reset_password_instructions
@@ -56,7 +55,6 @@ class Api::V1::AuthenticationController < Api::ApiController
 
         params[:health_care_facility_id] = current_user.health_care_facility_id
         user = User.new(invite_params)
-      user.image_url ="http://doc-and-i-bucket.s3.amazonaws.com/rewards/image_urls/000/000/005/original/data?1470228088"
 
         user.skip_confirmation!
         if user.save
