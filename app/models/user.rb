@@ -93,8 +93,8 @@ class User < ActiveRecord::Base
     end
     count = self.surveys.where(created_at: Time.zone.now.beginning_of_day..Time.now).count
 
-    if(survey_day.expected_patients > count)
-      survey_day.expected_patients = count + 1
+    if(survey_day.expected_patients < count)
+      survey_day.expected_patients = count 
       survey_day.save!
     end
     survey_day
