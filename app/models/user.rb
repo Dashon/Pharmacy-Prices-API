@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   # Include default devise modules.
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable,
     :confirmable
   belongs_to :health_care_facility
@@ -92,6 +92,13 @@ class User < ActiveRecord::Base
       survey_day.save!
     end
     survey_day
+    count = self.surveys.where(created_at: Time.zone.now.beginning_of_day..Time.now).count
+   
+    if(survey_day.expected_patients > count)
+    	survey_day.expected_patients = count + 1
+        survey_day.save!
+    end
+
   end
 
  def todays_surveys
