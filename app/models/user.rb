@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   # Include default devise modules.
-  devise :invitable, :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable,
     :confirmable
   belongs_to :health_care_facility
