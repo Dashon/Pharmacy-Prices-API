@@ -19,6 +19,18 @@ class Api::V1::AuthenticationController < Api::ApiController
     end
   end
 
+
+  def reset_password
+    @user = User.find_by_reset_password_token!(params[:reset_password_token])
+    if @user.reset_password_sent_at < 2.hours.ago
+      render json: {errors: ['Password reset has expired.']}, :status=>422
+    elsif @user.update_attributes(reset_params)
+      render :text => {response: ['Password has been reset!']}
+    else
+      render :edit
+    end
+  end
+
   def forgot_password
     @user = User.find_by_email(params[:email])
     if @user.present?
@@ -92,6 +104,11 @@ class Api::V1::AuthenticationController < Api::ApiController
   def user_params
     params.permit(:email, :password, :password_confirmation)
   end
+
+  def reset_params
+    params.permit(:password, :password_confirmation)
+  end
+
 
   def invite_params
     params.permit(:email, :role, :health_care_facility_id, :password, :name)
