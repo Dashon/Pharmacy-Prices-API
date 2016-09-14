@@ -21,7 +21,8 @@ class Api::V1::AuthenticationController < Api::ApiController
 
 
   def reset_password
-    @user = User.find_by_reset_password_token!(params[:reset_password_token])
+    @user = User.find_by_reset_password_token!(Devise.token_generator.digest(User.class, :reset_password_token, params[:reset_password_token]))
+
     if @user.reset_password_sent_at < 2.hours.ago
       render json: {errors: ['Password reset has expired.']}, :status=>422
     elsif @user.update_attributes(reset_params)
