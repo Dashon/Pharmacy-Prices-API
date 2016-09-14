@@ -44,7 +44,7 @@ class Api::V1::AuthenticationController < Api::ApiController
 
   def invite_user
     params[:password] = "Docandi2016"
-
+    existing = true
     if !params[:role]
       params[:role] = 2
     end
@@ -52,35 +52,34 @@ class Api::V1::AuthenticationController < Api::ApiController
     if !params[:health_care_facility_id]
       params[:health_care_facility_id] = current_user.health_care_facility_id
     end
+    user = User.first(user_id: 'email')
 
-    if current_user.doc_and_i_admin?
+    if user == nil
+      existing = false
       user = User.new(invite_params)
       user.image_url ="http://doc-and-i-bucket.s3.amazonaws.com/rewards/image_urls/000/000/005/original/data?1470228088"
       user.skip_confirmation!
-      if user.save
-        user.send_reset_password_instructions
-        render json: payload(user)
-        return
-      else
-        render :json=> user.errors, :status=>422
-      end
+    end
+
+    if current_user.doc_and_i_admin?
+      user.health_care_facility_id = params[:health_care_facility_id]
     elsif (current_user.team_admin? && current_user.health_care_facility_id == params[:health_care_facility_id])
       unless params[:role] == 18650
-
-        params[:health_care_facility_id] = current_user.health_care_facility_id
-        user = User.new(invite_params)
-        user.image_url ="http://doc-and-i-bucket.s3.amazonaws.com/rewards/image_urls/000/000/005/original/data?1470228088"
-
-        user.skip_confirmation!
-        if user.save
-          user.send_reset_password_instructions
-          render json: payload(user)
-          return
-        else
-          render :json=> user.errors, :status=>422
-        end
+        user.health_care_facility_id = current_user.health_care_facility_id
       end
     end
+
+    if user.save
+      if !existing
+        user.send_reset_password_instructions
+      end
+      render json: payload(user)
+      return
+    else
+      render :json=> user.errors, :status=>422
+    end
+      render :json=> "Internal", :status=>500
+
   end
 
   def log_out
