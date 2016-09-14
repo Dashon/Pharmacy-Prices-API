@@ -52,7 +52,7 @@ class Api::V1::AuthenticationController < Api::ApiController
     if !params[:health_care_facility_id]
       params[:health_care_facility_id] = current_user.health_care_facility_id
     end
-    user = User.first(user_id: 'email')
+    user = User.where(uid: params[:email]).first
 
     if user == nil
       existing = false
@@ -72,14 +72,13 @@ class Api::V1::AuthenticationController < Api::ApiController
     if user.save
       if !existing
         user.send_reset_password_instructions
+        render json: payload(user)
+      else
+        render json: payload(user), :status=>202
       end
-      render json: payload(user)
-      return
     else
       render :json=> user.errors, :status=>422
     end
-      render :json=> "Internal", :status=>500
-
   end
 
   def log_out
