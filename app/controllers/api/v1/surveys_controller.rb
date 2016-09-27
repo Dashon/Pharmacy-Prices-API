@@ -27,7 +27,7 @@ class Api::V1::SurveysController < Api::ApiController
   # POST /surveys.json
   def create
     @survey = Survey.new
-    @survey.user_id = current_user.id
+    @survey.user_id = params[:user_id] || current_user.id
     @survey.health_care_facility_id = current_user.health_care_facility_id
     @survey.survey_type = "340B"
     @survey.survey_day_id = current_user.survey_day.id
