@@ -39,7 +39,7 @@ class HealthCareFacility < ActiveRecord::Base
   def all_users
     users = []
     self.users.each do |user|
-      users.push({:name => user.name, :avatar => user.image_url, :points => points})
+      users.push({:name => user.name, :avatar => user.image_url})
     end
     users
   end
