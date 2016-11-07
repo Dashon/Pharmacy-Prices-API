@@ -45,4 +45,26 @@ class HealthCareFacility < ActiveRecord::Base
   def next_reward
     Reward.where(reward_type: 'next').first
   end
+
+
+  def team_month_points
+    points = 0
+      self.users.each do |user|
+        user.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
+          points = points + answer.question.value
+        end
+    end
+    points
+  end
+
+  def team_total_points
+    points = 0
+      self.users.each do |user|
+        user.answers.each do |answer|
+          points = points + answer.question.value
+        end
+    end
+    points
+  end
+
 end

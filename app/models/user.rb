@@ -46,30 +46,6 @@ class User < ActiveRecord::Base
     points
   end
 
-  def team_month_points
-    points = 0
-    if (self.health_care_facility)
-      self.health_care_facility.users.each do |user|
-        user.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
-          points = points + answer.question.value
-        end
-      end
-    end
-    points
-  end
-
-  def team_total_points
-    points = 0
-    if (self.health_care_facility)
-      self.health_care_facility.users.each do |user|
-        user.answers.each do |answer|
-          points = points + answer.question.value
-        end
-      end
-    end
-    points
-  end
-
   def trophies
     self.rewards.where(reward_type: 'trophy') +  Reward.where(reward_type: 'starter_trophy')
   end
