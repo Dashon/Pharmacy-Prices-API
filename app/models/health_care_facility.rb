@@ -30,11 +30,18 @@ class HealthCareFacility < ActiveRecord::Base
       user.answers.where(created_at: 1.month.ago..Time.now).each do |answer|
         points = points + answer.question.value
       end
-      # user.points = points
       users.push({:name => user.name, :avatar => user.image_url, :points => points})
     end
 
     users.sort_by { |hsh| hsh[:points] }.reverse.take(3)
+  end
+
+  def all_users
+    users = []
+    self.users.each do |user|
+      users.push({:name => user.name, :avatar => user.image_url, :points => points})
+    end
+    users
   end
 
 
@@ -49,20 +56,20 @@ class HealthCareFacility < ActiveRecord::Base
 
   def team_month_points
     points = 0
-      self.users.each do |user|
-        user.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
-          points = points + answer.question.value
-        end
+    self.users.each do |user|
+      user.answers.where(created_at: Time.zone.now.beginning_of_month..Time.now).each do |answer|
+        points = points + answer.question.value
+      end
     end
     points
   end
 
   def team_total_points
     points = 0
-      self.users.each do |user|
-        user.answers.each do |answer|
-          points = points + answer.question.value
-        end
+    self.users.each do |user|
+      user.answers.each do |answer|
+        points = points + answer.question.value
+      end
     end
     points
   end
