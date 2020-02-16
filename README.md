@@ -1,2 +1,2 @@
 # Pharmacy Prices API
-Angular 2
+Ruby API
