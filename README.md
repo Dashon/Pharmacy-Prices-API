@@ -1,1 +1,2 @@
-# doc-and-i-api
+# Pharmacy Prices API
+Angular 2
