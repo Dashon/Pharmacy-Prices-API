@@ -1,8 +1,8 @@
 GIT
-  remote: git://github.com/capistrano/rbenv.git
-  revision: e056efc0c361cc15b76ff961d6c5f65ed5e2c57e
+  remote: https://github.com/capistrano/rbenv.git
+  revision: 1fdb93a6dd4a4ab3fb786c995055cf6949daf7a4
   specs:
-    capistrano-rbenv (2.0.4)
+    capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
 
@@ -97,7 +97,8 @@ GEM
       activesupport (>= 4.1.0)
     hashids (1.0.2)
     hub (1.12.4)
-    i18n (0.7.0)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -120,7 +121,9 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mimemagic (0.3.1)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_portile2 (2.1.0)
     minitest (5.9.0)
     multi_json (1.12.1)
